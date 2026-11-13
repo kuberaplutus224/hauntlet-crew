@@ -56,7 +56,10 @@ and a spike task verifies it before anything depends on it.
 - **Warden:** this app.
 - **Data dir:** the app's data directory, `~/.kiro/crew/apps/hauntlet-warden/data/`
   (SDK `get_app_data_dir()`).
-- **Range directory:** `<data dir>/range/`. It is the working directory for
+- **Range directory:** `~/Library/Application Support/hauntlet-warden/range/`
+  on macOS, `$XDG_DATA_HOME/hauntlet-warden/range/` on Linux (default
+  `~/.local/share`). It is outside any `.kiro` directory, because Hauntlet's
+  Exorcist refuses to write under one (task 9). It is the working directory for
   every `hauntlet` command. It holds `.hauntlet/` (store, scratch and
   `exorcist/` bundles), `reports/` and `exorcist-reports/`.
 - **Checkout:** the user's local Hauntlet clone, set in settings.

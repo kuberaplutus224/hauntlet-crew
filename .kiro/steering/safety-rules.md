@@ -32,8 +32,8 @@ refuse or flag any work that breaks them.
 
 ## Also
 
-- Every `hauntlet` command runs from Warden's range directory under its data
-  dir. It never runs from the watched workspace, the checkout or this repo.
+- Every `hauntlet` command runs from Warden's range directory, which is
+  outside any `.kiro` directory. It never runs from the watched workspace, the checkout or this repo.
 - The Warden agent has no tools. It answers from the summary the page puts in
   the message, and never asks for scorecard HTML or room files.
 - Credits: only the agent uses them. Say so wherever cost is described.

@@ -19,7 +19,9 @@ inclusion: always
   `lucide-react` and `@kirocrew/app-sdk`. Charts are hand-written SVG.
 - **Hauntlet invocation:** an argv list, never a shell. The form is
   `uv run --offline --project <checkout> hauntlet …`, run from
-  `<data dir>/range/`, with an absolute `HAUNTLET_DB` and
+  the range directory (`~/Library/Application Support/hauntlet-warden/range`
+  on macOS, `$XDG_DATA_HOME/hauntlet-warden/range` on Linux; never under
+  `.kiro`, which Hauntlet's Exorcist refuses), with an absolute `HAUNTLET_DB` and
   `HAUNTLET_BASE_URL=http://127.0.0.1:8666`. Every inherited `HAUNTLET_*` and
   `RENDER_*` variable is removed first. Never use `--directory`.
 - **Storage:** JSON files under `<data dir>/warden/`, written atomically

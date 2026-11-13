@@ -72,12 +72,12 @@ workspace.
   - [x] 8.4 `README.md` (what it does, credits, install, settings, the 03:00 reset, why `--offline --project` and not `--no-sync`, safety rules, the Q decisions)
   - _Requirements: 9, 11, 1.8_
 
-- [ ] 9. Checkpoint: full suite and manual install
-  - [ ] 9.1 `uv run pytest` is green
-  - [ ] 9.2 `kirocrew app install .` → enable → page loads → settings saved → "Turn on nightly check" → `kirocrew cron trigger <id>` → the record and charts appear and no credits are shown on the run row
-  - [ ] 9.3 Force a change (point the watched workspace at the `weaker/` fixture copy). Expect exactly one notification. Rerun unchanged. Expect no notification
-  - [ ] 9.4 Confirm the watched workspace is unchanged (`find … -newer` marker file) and that no MCP server was added to Crew's config (`kirocrew` MCP list before and after)
-  - [ ] 9.5 Report results. Do not commit
+- [x] 9. Checkpoint: full suite and manual install
+  - [x] 9.1 `uv run pytest` is green
+  - [x] 9.2 `kirocrew app install .` → enable → page loads → settings saved → "Turn on nightly check" → `kirocrew cron trigger <id>` → the record and charts appear and no credits are shown on the run row
+  - [x] 9.3 Force a change (point the watched workspace at the `weaker/` fixture copy). Expect exactly one notification. Rerun unchanged. Expect no notification
+  - [x] 9.4 Confirm the watched workspace is unchanged (`find … -newer` marker file) and that no MCP server was added to Crew's config (`kirocrew` MCP list before and after)
+  - [x] 9.5 Report results. Do not commit
   - _Requirements: all_
 
 ## Task Dependency Graph
@@ -135,3 +135,4 @@ Why each task sits in its wave:
 - **Docs vs 0.12.2:** where the installed Crew differs from the docs
   (proxy header names, `PORT`, MCP cron tool scope), the design follows the
   verified behaviour and records both. Re-check them on a Crew upgrade.
+  - Task 9 found that Hauntlet's Exorcist refuses a range dir under `.kiro`; the range dir moved to the platform user-data location (design.md "Findings during task 9"), with `tests/test_paths.py`

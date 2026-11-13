@@ -73,7 +73,7 @@ def test_resolve_uv():
 
 def test_range_overlapping_watched_workspace_is_refused(tmp_path, checkout):
     ws = tmp_path / "ws"
-    paths = Paths(ws / "inner" / "data")
+    paths = Paths(ws / "inner" / "data", ws / "inner" / "range")
     with pytest.raises(SettingsInvalid, match="watched workspace"):
         C.build_plan(Settings(hauntlet_checkout=str(checkout), watched_workspace=str(ws)), paths, UV, {})
 
@@ -102,7 +102,7 @@ def test_p9_every_cmd_meets_the_invariants(tmp_path_factory, rooms, repeat, layo
         ws = data / "ws"
     for d in (checkout, ws, data):
         d.mkdir(parents=True, exist_ok=True)
-    paths = Paths(data)
+    paths = Paths(data, data.with_name(data.name + "-range"))
     s = Settings(hauntlet_checkout=str(checkout), watched_workspace=str(ws), rooms=tuple(rooms), repeat=repeat)
     try:
         p = C.build_plan(s, paths, UV, {"HAUNTLET_DB": "x"})

@@ -37,7 +37,7 @@ def output(name: str) -> dict:
 def paths(tmp_path):
     from warden.paths import Paths
 
-    p = Paths(tmp_path / "app" / "data")
+    p = Paths(tmp_path / "app" / "data", tmp_path / "userdata" / "hauntlet-warden" / "range")
     p.ensure()
     return p
 

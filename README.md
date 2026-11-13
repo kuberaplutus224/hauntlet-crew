@@ -81,9 +81,8 @@ Each command is an argument list (no shell) of the form:
 uv run --offline --project <checkout> hauntlet …
 ```
 
-Every command runs from Warden's own range directory,
-`~/.kiro/crew/apps/hauntlet-warden/data/range/`. It never runs from the
-watched workspace or the checkout, because Hauntlet writes room files to
+Every command runs from Warden's own range directory. It never runs from
+the watched workspace or the checkout, because Hauntlet writes room files to
 `./.hauntlet/scratch/`. It uses an absolute `HAUNTLET_DB` and
 `HAUNTLET_BASE_URL=http://127.0.0.1:8666`, and it first removes any inherited
 `HAUNTLET_*` and `RENDER_*` variables.
@@ -97,6 +96,25 @@ checkout's own `.venv` in step with its lock file, and may update that
 `.venv` (which the checkout's `.gitignore` excludes). `--no-sync` would leave
 it untouched, but it could silently run a stale environment and report wrong
 results. That is worse. Warden writes nothing else in the checkout.
+
+### Where things are kept
+
+| What | Where |
+|---|---|
+| Warden's records: settings, run history, drift, reference, summary | `~/.kiro/crew/apps/hauntlet-warden/data/warden/` (the app's data dir) |
+| The range directory: Hauntlet's store, room scratch files, scorecards, Exorcist bundles | macOS: `~/Library/Application Support/hauntlet-warden/range/`. Linux: `$XDG_DATA_HOME/hauntlet-warden/range/` (default `~/.local/share/hauntlet-warden/range/`) |
+
+The range directory is outside `~/.kiro` on purpose. Hauntlet's Exorcist
+refuses to write anywhere under a `.kiro` directory, and Crew installs apps
+under `~/.kiro/crew/apps/`.
+
+**Uninstalling the app leaves the range directory in place**, because it is
+not inside the app's data dir. Delete it yourself afterwards:
+
+```bash
+rm -rf ~/Library/Application\ Support/hauntlet-warden          # macOS
+rm -rf "${XDG_DATA_HOME:-$HOME/.local/share}/hauntlet-warden"  # Linux
+```
 
 ### Installing from GitHub (from 2026-12-04)
 
@@ -141,8 +159,9 @@ These are in `.kiro/steering/safety-rules.md` and enforced by tests:
 2. **Dummy secrets show only as `HAUNTLET-DUMMY-…`**, in records, on the
    page, in notifications and in the summary.
 3. **Localhost only.** Runs are offline, and the backend listens on loopback.
-   Scorecards are served with a policy that blocks every external load. The
-   Alpine.js they reference is not fetched, and the pages work without it.
+   Scorecards are served with a security header that blocks every external
+   load. The scorecard's Alpine.js request is blocked on purpose: the
+   scorecard is built to work without scripts.
    The one exception is the approved GitHub install above.
 4. **One statement about client behaviour:** "Some client behaviours are out
    of reach of config."

@@ -979,3 +979,40 @@ was decided as option A ("Agent: decision").
 - **Q7 — `repeat`.** The default is k=3. The headline is then pass^2 (see
   findings).
 - **Agent.** Option A ("Agent: decision").
+
+## Findings during task 9 (installed in Crew 0.12.2, 2026-11-12)
+
+- **The Exorcist demo refused Warden's range directory (fixed, option A).** Hauntlet's
+  `exorcist/writer.py` `_refuse_kiro` refuses any write path with a `.kiro`
+  component. The installed data dir is `~/.kiro/crew/apps/hauntlet-warden/data/`,
+  so all five `exorcist demo` commands exit 1 with "refusing to write inside a
+  .kiro directory". No reference is built, so drift stays "no reference yet".
+  The tests and the earlier end-to-end run used `/tmp` data dirs and could not
+  catch this. **Fix:** the range directory moved out of the data dir, to
+  `~/Library/Application Support/hauntlet-warden/range` (macOS) and
+  `$XDG_DATA_HOME/hauntlet-warden/range`, default `~/.local/share` (Linux).
+  An `XDG_DATA_HOME` that is relative or under `.kiro` is ignored. Warden's
+  records stay in `<data dir>/warden/`. A throwaway script cron confirmed
+  that the sandboxed cron child (level `cc`) can write there. `Paths` now
+  takes `range_root` explicitly, and `check_range_root` refuses any `.kiro`
+  component, both in `Paths.ensure` and `commands.build_plan`
+  (`tests/test_paths.py`, including a Hypothesis property). Uninstalling the
+  app leaves the range directory; the README says how to delete it.
+  Hauntlet is unchanged.
+- **Agent with `"tools": []`** registers as `tools: []`, `mcpServers: {}`.
+- **Ask Warden** opens `/chat/new-session` with agent `hauntlet-warden`, the
+  summary pre-filled ("Prompt pre-filled — add context, then Send"), not sent.
+  It creates one empty chat session; no turn runs, so no credits.
+- **Scorecard links** load as a top-level navigation with the dashboard
+  session alone (200, no token in the URL). The CSP header is present, and
+  the scorecard's Alpine.js request (cdn.jsdelivr.net) is blocked by it
+  (`blockedReason: csp`). **This is on purpose:** the scorecard is
+  server-rendered and built to work without scripts (Hauntlet README, "The
+  scorecard"), so blocking the script costs only its live updates and keeps
+  Warden localhost-only.
+- **Dashboard tokens:** a `kirocrew token` used once on `/apps/<app>/api/*`
+  is then refused (403) on `/api/crons`. The page's browser session is not
+  affected (Run now and Turn on nightly check work); only scripts need two
+  tokens.
+- **Credits:** Crew's run history for the job has no `credits` or `model`
+  field; a run took 6.5 s.

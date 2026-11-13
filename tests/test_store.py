@@ -25,7 +25,8 @@ json_values = st.recursive(
 @given(json_values)
 def test_p6_save_then_load_is_identity(tmp_path_factory, value):
     """Property P6 (round trip)."""
-    p = Paths(tmp_path_factory.mktemp("p6") / "data")
+    b = tmp_path_factory.mktemp("p6")
+    p = Paths(b / "data", b / "range")
     rec = mkrec(1, payload=value)
     store.save_run(p, rec)
     assert store.latest(p) == rec
@@ -53,7 +54,8 @@ def test_interrupted_write_keeps_previous_file(paths, monkeypatch):
 @given(st.integers(0, 12), st.integers(1, 6))
 def test_p6_prune_keeps_exactly_the_newest(tmp_path_factory, n, keep):
     """Property P6 (prune keeps the newest ``keep``)."""
-    p = Paths(tmp_path_factory.mktemp("prune") / "data")
+    b = tmp_path_factory.mktemp("prune")
+    p = Paths(b / "data", b / "range")
     for i in range(n):
         store.save_run(p, mkrec(i))
     store.prune(p, keep=keep)
@@ -89,7 +91,7 @@ def test_prune_scope(paths, tmp_path):
     assert not old_scratch.exists() and new_scratch.exists()
     assert tmp_path.exists() and linked.is_symlink()
     assert not bundle.exists()
-    assert all(str(d).startswith(str(paths.data)) for d in deleted)
+    assert deleted and all(str(d).startswith((str(paths.data), str(paths.range))) for d in deleted)
 
 
 def test_run_lock_is_exclusive(paths):

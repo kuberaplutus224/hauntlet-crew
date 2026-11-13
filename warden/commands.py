@@ -8,7 +8,7 @@ from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from warden.paths import Paths, overlaps
+from warden.paths import Paths, RangeDirInvalid, check_range_root, overlaps
 from warden.settings import DEMO_ROOMS, KNOWN_ROOMS, Settings, SettingsInvalid
 
 #: The one allow-listed non-loopback URL (decision Q1). Used only by the one-time,
@@ -73,14 +73,18 @@ def hauntlet_prefix(s: Settings, uv: Path | None) -> tuple[str, ...]:
 
 def _check_range(s: Settings, paths: Paths) -> None:
     errs = []
-    if not os.path.isabs(paths.range):
-        errs.append("the range directory must be absolute")
-    # Checked against the whole data dir, not just the range directory, so neither the
-    # checkout nor the watched workspace can hold, or sit inside, anything Warden writes.
-    if s.hauntlet_source == "checkout" and s.hauntlet_checkout and overlaps(paths.data, s.hauntlet_checkout):
-        errs.append("the Hauntlet checkout must not overlap Warden's data dir")
-    if s.watched_workspace and overlaps(paths.data, s.watched_workspace):
-        errs.append("the watched workspace must not overlap Warden's data dir")
+    try:
+        check_range_root(paths.range)
+    except RangeDirInvalid as exc:
+        errs.append(str(exc))
+    # Checked against both the data dir and the range dir, so neither the checkout nor
+    # the watched workspace can hold, or sit inside, anything Warden writes.
+    for own in (paths.data, paths.range):
+        if s.hauntlet_source == "checkout" and s.hauntlet_checkout and overlaps(own, s.hauntlet_checkout):
+            errs.append("the Hauntlet checkout must not overlap Warden's data or range directory")
+        if s.watched_workspace and overlaps(own, s.watched_workspace):
+            errs.append("the watched workspace must not overlap Warden's data or range directory")
+    errs = list(dict.fromkeys(errs))
     bad = [r for r in s.rooms if r not in KNOWN_ROOMS]
     if bad:
         errs.append(f"unknown rooms: {', '.join(bad)}")

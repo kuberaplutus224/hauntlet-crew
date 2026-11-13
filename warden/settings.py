@@ -152,8 +152,8 @@ def validate(s: Settings, paths: Paths, *, today: _dt.date | None = None) -> lis
             errors.append("the Hauntlet checkout does not exist")
         elif not _is_hauntlet_checkout(Path(c)):
             errors.append("the checkout's pyproject.toml does not declare the project 'hauntlet'")
-        elif overlaps(c, paths.data):
-            errors.append("the Hauntlet checkout must not overlap Warden's data dir")
+        elif overlaps(c, paths.data) or overlaps(c, paths.range):
+            errors.append("the Hauntlet checkout must not overlap Warden's data or range directory")
     else:  # git
         if today < GIT_PUBLIC_DATE:
             errors.append(f"the git source is available from {GIT_PUBLIC_DATE.isoformat()}")
@@ -167,8 +167,8 @@ def validate(s: Settings, paths: Paths, *, today: _dt.date | None = None) -> lis
             errors.append("the watched workspace must be an absolute path")
         elif not Path(w).is_dir():
             errors.append("the watched workspace does not exist")
-        elif overlaps(w, paths.data):
-            errors.append("the watched workspace must not overlap Warden's data dir")
+        elif overlaps(w, paths.data) or overlaps(w, paths.range):
+            errors.append("the watched workspace must not overlap Warden's data or range directory")
     if not s.rooms:
         errors.append("choose at least one room")
     elif len(set(s.rooms)) != len(s.rooms):
