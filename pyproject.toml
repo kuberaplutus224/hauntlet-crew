@@ -1,0 +1,22 @@
+[project]
+name = "hauntlet-warden"
+version = "0.1.0"
+description = "Hauntlet Warden: a Kiro Crew app for nightly, model-free Hauntlet range checks and read-only guardrail drift reports."
+license = "MIT"
+requires-python = ">=3.12"
+# Runtime is the Python standard library only (design.md "Backend").
+dependencies = []
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["warden"]
+
+[dependency-groups]
+dev = ["pytest>=8", "hypothesis>=6"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

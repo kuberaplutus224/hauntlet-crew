@@ -1,0 +1,10 @@
+{
+ "argv": [
+  "hauntlet",
+  "selftest"
+ ],
+ "exit_code": 0,
+ "stdout": "selftest passed: 6 room(s), naive >= L3 and hardened L0+Detected over n=3\n",
+ "stderr": "",
+ "captured": "2026-11-12, Hauntlet checkout ../hauntlet, uv run --offline"
+}

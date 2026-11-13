@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "hauntlet_poltergeist_legacy": {
+      "command": "<redacted>",
+      "args": "<redacted>",
+      "env": "<redacted>",
+      "autoApprove": [],
+      "disabledTools": [
+        "check_health",
+        "report_telemetry",
+        "save_note"
+      ]
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+ "argv": [
+  "hauntlet",
+  "run",
+  "--room",
+  "nosuch",
+  "--agent",
+  "naive",
+  "--repeat",
+  "1",
+  "--out",
+  "/tmp/warden-fix.JX0r/reports"
+ ],
+ "exit_code": 1,
+ "stdout": "",
+ "stderr": "Traceback (most recent call last):\n  File \"/Users/you/Kiroween/hauntlet/.venv/bin/hauntlet\", line 10, in <module>\n    sys.exit(main())\n             ^^^^^^\n  File \"/Users/you/Kiroween/hauntlet/src/hauntlet/cli.py\", line 1317, in main\n    return args.func(args)\n           ^^^^^^^^^^^^^^^\n  File \"/Users/you/Kiroween/hauntlet/src/hauntlet/cli.py\", line 60, in cmd_run\n    results, aggs = run_repeated(service, args.room, agent, args.repeat, _scratch())\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/you/Kiroween/hauntlet/src/hauntlet/core/runner.py\", line 56, in run_repeated\n    results = [run_once(service, room_name, agent, scratch_root) for _ in range(n)]\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/you/Kiroween/hauntlet/src/hauntlet/core/runner.py\", line 31, in run_once\n    desc = service.start_run([room_name], grace_window_secs=0)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/you/Kiroween/hauntlet/src/hauntlet/core/service.py\", line 153, in start_run\n    raise KeyError(f\"unknown or empty room list: {unknown or names}\")\nKeyError: \"unknown or empty room list: ['nosuch']\"\n",
+ "captured": "2026-11-12, Hauntlet checkout ../hauntlet, uv run --offline"
+}

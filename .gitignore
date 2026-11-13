@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.hypothesis/
+ui/node_modules/
+*.egg-info/
+.DS_Store
+# Runtime data dir of an installed copy; never part of the repo
+/data/

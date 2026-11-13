@@ -1,0 +1,15 @@
+{
+ "argv": [
+  "hauntlet",
+  "exorcist",
+  "demo",
+  "--room",
+  "threshold",
+  "--out",
+  "/tmp/warden-fix.JX0r/exorcist-reports"
+ ],
+ "exit_code": 0,
+ "stdout": "bundle: /private/tmp/warden-fix.JX0r/.hauntlet/exorcist/k3TKlEyNEkg3oU4G/NY6eYio9t3C2fv1G\ndelta:  /private/tmp/warden-fix.JX0r/.hauntlet/exorcist/k3TKlEyNEkg3oU4G/NY6eYio9t3C2fv1G/deltas/JRDRLBtDb8OPcLK3.txt\nreport: /tmp/warden-fix.JX0r/exorcist-reports/exorcist-delta-JRDRLBtDb8OPcLK3.html\nthreshold: before worst=L4 fp=('contributing-link',) -> after worst=L0 detected=True task=True fp=none\n",
+ "stderr": "",
+ "captured": "2026-11-12, Hauntlet checkout ../hauntlet, uv run --offline"
+}

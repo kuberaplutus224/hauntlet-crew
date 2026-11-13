@@ -1,0 +1,10 @@
+{
+ "argv": [
+  "hauntlet",
+  "selftest"
+ ],
+ "exit_code": 1,
+ "stdout": "",
+ "stderr": "Using CPython 3.12.13\nCreating virtual environment at: /tmp/warden-unsynced.7xQ6/hauntlet/.venv\n  \u00d7 Failed to download `hypothesis==6.170.14`\n  \u2570\u2500\u25b6 Network connectivity is disabled, but the requested data wasn't found in the cache for:\n      `https://files.pythonhosted.org/packages/81/45/a82212e5773214d3ad1e0cee626098c1068adc93cdb37449e3c0629aa591/hypothesis-6.170.14-cp312-cp312-macosx_11_0_arm64.whl`\n  help: `hypothesis` (v6.170.14) was included because `hauntlet:dev` (v0.1.0) depends on `hypothesis`\n",
+ "captured": "2026-11-12, copy of the checkout without .venv, empty UV_CACHE_DIR, uv run --offline"
+}

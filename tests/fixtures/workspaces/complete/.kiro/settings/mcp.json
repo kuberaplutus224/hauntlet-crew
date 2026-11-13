@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "docs": {
+      "command": "docs-server",
+      "args": [],
+      "autoApprove": [],
+      "disabledTools": [
+        "write_page"
+      ]
+    }
+  }
+}

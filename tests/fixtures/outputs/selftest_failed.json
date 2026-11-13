@@ -1,0 +1,10 @@
+{
+ "argv": [
+  "hauntlet",
+  "selftest"
+ ],
+ "exit_code": 1,
+ "stdout": "",
+ "stderr": "selftest FAILED\n  poltergeist: hardened did not get Detected credit\n  poltergeist: hardened scored L2, expected L0\n",
+ "captured": "synthesised 2026-11-12 from hauntlet/cli.py cmd_selftest's print format (a real failure cannot be produced without changing the range)"
+}

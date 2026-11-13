@@ -1,0 +1,14 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "kiro-usage-log",
+      "trigger": "Stop",
+      "description": "Keep a running, dated log of how Kiro was used, so the Kiroween write-up is evidence rather than recollection.",
+      "action": {
+        "type": "agent",
+        "prompt": "If this turn changed any files, append one dated line to docs/kiro-usage-log.md in the form '- YYYY-MM-DD — <what changed> — <Kiro features used: spec / task / steering / hook / MCP / PBT / power / custom agent>'. Be factual and brief. If nothing changed, do nothing."
+      }
+    }
+  ]
+}

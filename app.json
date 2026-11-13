@@ -1,0 +1,44 @@
+{
+  "name": "hauntlet-warden",
+  "version": "0.1.0",
+  "displayName": "Hauntlet Warden",
+  "description": "Nightly, model-free Hauntlet range checks and a read-only guardrail drift report for one workspace.",
+  "author": "kuberaplutus224",
+  "license": "MIT",
+  "tags": ["security", "hauntlet", "guardrails", "monitoring"],
+  "minKiroCrewVersion": "0.12.2",
+  "agents": ["agents/warden.json"],
+  "skills": ["skills/warden"],
+  "crons": [
+    {
+      "name": "nightly-range-check",
+      "cron_expr": "0 3 * * *",
+      "timezone": "local",
+      "strict_schedule": true,
+      "script": "backend/nightly.py:run",
+      "silent": true,
+      "persistent_session": false,
+      "timeout": 1800,
+      "timeout_secs": 1830,
+      "enabled": false
+    }
+  ],
+  "backend": {
+    "entryPoint": "backend/server.py",
+    "type": "python",
+    "port": "auto",
+    "healthCheck": "/health"
+  },
+  "ui": {
+    "entry": "dist/index.mjs",
+    "pages": [{ "route": "/apps/hauntlet-warden", "label": "Warden", "icon": "ShieldCheck" }]
+  },
+  "permissions": {
+    "api": ["/api/crons", "/apps/hauntlet-warden/api"],
+    "storage": true,
+    "cron": true,
+    "network": false
+  },
+  "dependencies": { "commands": ["uv"] },
+  "platform": { "os": ["macos", "linux"] }
+}

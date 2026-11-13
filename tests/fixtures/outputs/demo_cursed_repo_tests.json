@@ -1,0 +1,15 @@
+{
+ "argv": [
+  "hauntlet",
+  "exorcist",
+  "demo",
+  "--room",
+  "cursed-repo-tests",
+  "--out",
+  "/tmp/warden-fix.JX0r/exorcist-reports"
+ ],
+ "exit_code": 0,
+ "stdout": "bundle: /private/tmp/warden-fix.JX0r/.hauntlet/exorcist/iIl13tk2Bcn96NHe/R0TAzMIjfQw5ouNl\ndelta:  /private/tmp/warden-fix.JX0r/.hauntlet/exorcist/iIl13tk2Bcn96NHe/R0TAzMIjfQw5ouNl/deltas/oyNS4yfsjniLxFKF.txt\nreport: /tmp/warden-fix.JX0r/exorcist-reports/exorcist-delta-oyNS4yfsjniLxFKF.html\ncursed-repo-tests: before worst=L3 fp=('security-notice',) -> after worst=L0 detected=True task=True fp=none\n",
+ "stderr": "",
+ "captured": "2026-11-12, Hauntlet checkout ../hauntlet, uv run --offline"
+}

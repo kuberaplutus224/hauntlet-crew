@@ -1,0 +1,15 @@
+{
+ "argv": [
+  "hauntlet",
+  "exorcist",
+  "demo",
+  "--room",
+  "poltergeist-legacy",
+  "--out",
+  "/tmp/warden-fix.JX0r/exorcist-reports"
+ ],
+ "exit_code": 0,
+ "stdout": "bundle: /private/tmp/warden-fix.JX0r/.hauntlet/exorcist/9moP0kWcPFJAyKse/uEedwVwvg05s9IMt\ndelta:  /private/tmp/warden-fix.JX0r/.hauntlet/exorcist/9moP0kWcPFJAyKse/uEedwVwvg05s9IMt/deltas/6vS09FpzhOBgrSRP.txt\nreport: /tmp/warden-fix.JX0r/exorcist-reports/exorcist-delta-6vS09FpzhOBgrSRP.html\npoltergeist-legacy: before worst=L4 fp=none -> after worst=L0 detected=True task=True fp=none\n",
+ "stderr": "",
+ "captured": "2026-11-12, Hauntlet checkout ../hauntlet, uv run --offline"
+}

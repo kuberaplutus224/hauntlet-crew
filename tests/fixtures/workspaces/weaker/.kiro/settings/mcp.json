@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "github": {
+      "command": "github-mcp",
+      "args": [],
+      "autoApprove": [
+        "create_issue"
+      ]
+    },
+    "docs": {
+      "command": "docs-server",
+      "args": [],
+      "autoApprove": [],
+      "disabledTools": [
+        "write_page"
+      ]
+    }
+  }
+}
