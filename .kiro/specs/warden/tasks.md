@@ -60,16 +60,16 @@ workspace.
   - [x] 6.3 `test_content.py` (Requirement 12.5)
   - _Requirements: 1, 10, 12.3, 12.5_
 
-- [ ] 7. Dashboard page
-  - [ ] 7.1 `ui/` Vite project with the externals of D16, `src/api.ts` (paths from the spike), `App.tsx`, the rooms, drift and settings panels, SVG charts, and the "Ask Warden" button (`useChatLauncher`; check its argument shape on the 0.12.2 host)
-  - [ ] 7.2 `npm install && npm run build` → `ui/dist/index.mjs` (to be committed by you; not committed here)
+- [x] 7. Dashboard page
+  - [x] 7.1 `ui/` Vite project with the externals of D16, `src/api.ts` (paths from the spike), `App.tsx`, the rooms, drift and settings panels, SVG charts, and the "Ask Warden" button (`useChatLauncher`; check its argument shape on the 0.12.2 host)
+  - [x] 7.2 `npm install && npm run build` → `ui/dist/index.mjs` (to be committed by you; not committed here). `tests/test_ui.py` checks the bundle statically: only host externals, a default export, built from the current source, the scorecard colours, Ask Warden not auto-sent, no absolute URLs
   - _Requirements: 7, 1.6_
 
-- [ ] 8. Agent, skill and README (option A, design.md "Agent: decision")
-  - [ ] 8.1 `agents/warden.json` with `"tools": []` and the option-A prompt. Confirm the registered file in `~/.kiro/agents/` after `kirocrew app update`
-  - [ ] 8.2 `skills/warden/SKILL.md`: answer from the summary in the message, send the user to the page when there is none, "Run now" is the page button
-  - [ ] 8.3 `test_agent_skill.py` (JSON fields, empty `tools`, frontmatter, the approved sentence, the credit note, no instruction to open `range/` or HTML)
-  - [ ] 8.4 `README.md` (what it does, credits, install, settings, safety rules, Q-decisions)
+- [x] 8. Agent, skill and README (option A, design.md "Agent: decision")
+  - [x] 8.1 `agents/warden.json` with `"tools": []` and the option-A prompt. Confirm the registered file in `~/.kiro/agents/` after `kirocrew app update`
+  - [x] 8.2 `skills/warden/SKILL.md`: answer from the summary in the message, send the user to the page when there is none, "Run now" is the page button
+  - [x] 8.3 `test_agent_skill.py` (JSON fields, empty `tools`, frontmatter, the approved sentence, the credit note, no instruction to open `range/` or HTML)
+  - [x] 8.4 `README.md` (what it does, credits, install, settings, the 03:00 reset, why `--offline --project` and not `--no-sync`, safety rules, the Q decisions)
   - _Requirements: 9, 11, 1.8_
 
 - [ ] 9. Checkpoint: full suite and manual install

@@ -289,16 +289,19 @@ time and my guardrail drift.
 
 1. THE page SHALL be a React ESM bundle built with Vite. It SHALL mark
    `react`, `react-dom`, `react/jsx-runtime`, `lucide-react` and
-   `@kirocrew/app-sdk` as externals, and use `@kirocrew/app-sdk/ui` components.
+   `@kirocrew/app-sdk` as externals. It SHALL use its own scoped dark theme,
+   with the Hauntlet scorecard's level colours for L0–L4, rather than the
+   host's UI components, which follow the dashboard theme.
 2. THE page SHALL show:
    - the last run's time, trigger and status, plus the selftest result;
    - per room and agent, the worst level and `pass^k` over time, as a small
-     inline SVG chart (no chart library);
+     inline SVG chart (no chart library), labelled with the k shown;
    - the drift status per file, with each item's status and reason;
    - for each room and agent in the last run, a link to its scorecard and the
      absolute path of the HTML file.
-3. THE page SHALL offer "Run now", "Check drift now" and the settings form
-   (checkout, watched workspace, rooms, repeat `k`).
+3. THE page SHALL offer "Run now", "Check drift now", "Ask Warden"
+   (Requirement 11.3) and the settings form (checkout, watched workspace,
+   rooms, repeat `k`).
 4. WHEN the settings are valid and the cron is paused, THE page SHALL offer
    "Turn on nightly check", which resumes the app's own cron.
 5. Scorecard links SHALL be served by Warden's backend, only for file names
@@ -308,6 +311,8 @@ time and my guardrail drift.
    'unsafe-inline'; img-src data:`, so the page loads nothing from any host.
 6. THE drift panel SHALL show the sentence "Some client behaviours are out of
    reach of config." It SHALL make no other statement about client behaviour.
+7. BEFORE the first run, and while the settings are not valid, THE page
+   SHALL show clear empty states that say what to do next.
 
 ### Requirement 8: Backend and settings
 

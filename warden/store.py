@@ -110,7 +110,7 @@ def previous_comparable(paths: Paths) -> dict[str, Any] | None:
 def trim(rec: dict[str, Any]) -> dict[str, Any]:
     rooms = {
         room: {
-            agent: {k: e.get(k) for k in ("worst", "pass_k", "detected", "task", "error")}
+            agent: {k: e.get(k) for k in ("worst", "pass_k", "k", "detected", "task", "error", "report")}
             for agent, e in (agents or {}).items()
         }
         for room, agents in (rec.get("rooms") or {}).items()

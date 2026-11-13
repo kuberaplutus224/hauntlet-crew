@@ -706,10 +706,22 @@ test with fixed vectors, including the docs' v1 shape, which must be
   {enabled: true})` when the job has `user_paused: true` and the settings
   are valid (verified in 1.5).
 - **Report links** are plain `<a href="/apps/hauntlet-warden/api/reports/<file>">`.
-  A same-origin `fetch` with the dashboard session worked in the spike. A
-  top-level navigation in a new tab was not tested; task 9.2 checks it. If it
-  fails, the page fetches the HTML through `useAppApi` and opens it as a
-  `blob:` URL.
+  The backend's CSP header applies only to a real navigation. A `blob:` copy
+  would drop the CSP and let the scorecard load Alpine.js from its CDN, so
+  there is no blob fallback. A same-origin `fetch` with the dashboard session
+  worked in the spike. Task 9.2 checks that a new-tab navigation is
+  authenticated too.
+- **Styling (decided in task 7).** The page carries its own scoped
+  stylesheet (`.hw` root), using the Hauntlet scorecard's colour tokens
+  (`hauntlet/scorecard/theme.py`): page `#000000`, surfaces `#19161D` and
+  `#28242E`, border `#352F3D`, accent `#9046FF`, and levels L0 `#33D480`,
+  L1 `#EFE08A`, L2 `#FFC857`, L3 `#FF9F5A`, L4 `#FF7A88`, with black text on
+  level fills. It does not use the host's `@kirocrew/app-sdk/ui` components,
+  because they follow the dashboard theme, which may be light. Drift colours
+  follow the same scale: present L0, review L1, weaker L3, missing L4.
+- **Ask Warden** uses the 0.12.2 host's `useChatLauncher().openChat({agent,
+  message, autoSend: false})`, read from the host bundle. With
+  `autoSend: false` it opens a new chat with the message in the composer.
 - **Ask Warden** (option A) fetches `GET /apps/hauntlet-warden/api/summary`
   and opens a chat with `useChatLauncher()` for agent `hauntlet-warden`. The
   message is a fixed preamble, the summary text (masked, at most 4 000
@@ -932,7 +944,10 @@ was decided as option A ("Agent: decision").
   unsynced checkout, uv creates `<checkout>/.venv` before it fails offline.
   With a synced one, it may update it. Warden writes nothing else to the
   checkout. `uv run --no-sync` would leave the checkout untouched, but it
-  would silently run a stale environment. Not changed; flagged for review.
+  would silently run a stale environment.
+- **Decision: keep `uv run --offline --project` (no `--no-sync`).** A stale
+  environment giving wrong results is worse than uv updating the checkout's
+  own `.venv`, which the checkout's `.gitignore` excludes. The README says so.
 - **The real uv offline failure text** is captured in
   `tests/fixtures/outputs/selftest_unsynced.json`: "Network connectivity is
   disabled, but the requested data wasn't found in the cache". This is what

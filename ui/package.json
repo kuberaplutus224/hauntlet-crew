@@ -1,0 +1,20 @@
+{
+  "name": "hauntlet-warden-ui",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Hauntlet Warden dashboard page (built to ui/dist/index.mjs, which is committed).",
+  "scripts": {
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "preview:build": "vite build --config vite.preview.config.ts"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "typescript": "^5.6.0",
+    "vite": "^6.0.0"
+  }
+}

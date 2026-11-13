@@ -2,6 +2,7 @@
 name = "hauntlet-warden"
 version = "0.1.0"
 description = "Hauntlet Warden: a Kiro Crew app for nightly, model-free Hauntlet range checks and read-only guardrail drift reports."
+readme = "README.md"
 license = "MIT"
 requires-python = ">=3.12"
 # Runtime is the Python standard library only (design.md "Backend").

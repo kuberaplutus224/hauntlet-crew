@@ -71,7 +71,9 @@ def test_no_mcp_configuration_writes():
     for p in files():
         text = p.read_text(errors="replace")
         r = rel(p)
-        if "mcp.json" in text:
+        # Code may name mcp.json only where it reads the watched workspace or a bundle.
+        # The page, agent and skill may mention it in prose (they cannot write files).
+        if p.suffix == ".py" and "mcp.json" in text:
             assert r in MCP_READERS, f"{r} names mcp.json"
         for needle in ("register_app_mcp", "registerAppMcp", "register_mcp_server", "/api/mcp", "mcpServers\":"):
             assert needle not in text, f"{r} contains {needle}"
