@@ -1,4 +1,3 @@
-import datetime as dt
 import itertools
 
 from conftest import output
@@ -7,7 +6,6 @@ from warden import runner, store
 from warden.execute import Outcome
 from warden.settings import DEMO_ROOMS, KNOWN_ROOMS, Settings
 
-TODAY = dt.date(2026, 11, 13)
 
 
 def settings_for(checkout, ws="", **kw):
@@ -16,7 +14,7 @@ def settings_for(checkout, ws="", **kw):
 
 def go(paths, s, fake, **kw):
     return runner.run_all(s, paths, trigger="schedule", execute=fake, base_env={}, which=lambda _: "/x/uv",
-                          today=TODAY, **kw)
+                          **kw)
 
 
 def test_full_run_records_everything(paths, checkout, workspace_copy):

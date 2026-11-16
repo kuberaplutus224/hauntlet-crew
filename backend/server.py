@@ -8,7 +8,6 @@ backend never runs Hauntlet's nightly sequence; that is the cron's job.
 
 from __future__ import annotations
 
-import datetime as _dt
 import json
 import os
 import re
@@ -45,13 +44,12 @@ COMMON_HEADERS = {
 class App:
     """State shared by request handlers. Tests build one with temporary paths."""
 
-    def __init__(self, paths: Paths, secret: str | None, *, today=None, execute=run_cmd, base_env=None):
+    def __init__(self, paths: Paths, secret: str | None, *, execute=run_cmd, base_env=None):
         self.paths = paths
         self.secret = secret
         self.cache = proxyauth.ReplayCache()
         self.drift_lock = threading.Lock()
         self.install_lock = threading.Lock()
-        self.today = today
         self.execute = execute
         self.base_env = os.environ if base_env is None else base_env
 
@@ -62,7 +60,7 @@ class App:
             return None, exc.errors
         if s is None:
             return None, ["not configured"]
-        return s, settings.validate(s, self.paths, today=self.today)
+        return s, settings.validate(s, self.paths)
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -148,7 +146,6 @@ class Handler(BaseHTTPRequestHandler):
             "reference": {"rooms": reference.reference_rooms(ref)},
             "known_rooms": list(settings.KNOWN_ROOMS),
             "demo_rooms": list(settings.DEMO_ROOMS),
-            "git_available_from": settings.GIT_PUBLIC_DATE.isoformat(),
         })
 
     def get_history(self, body: bytes) -> None:
@@ -206,7 +203,7 @@ class Handler(BaseHTTPRequestHandler):
             new = settings.with_client_update(current, data)
         except settings.SettingsInvalid as exc:
             return self._json(400, {"error": "settings invalid", "errors": exc.errors})
-        errors = settings.validate(new, self.app.paths, today=self.app.today)
+        errors = settings.validate(new, self.app.paths)
         if errors:
             return self._json(400, {"error": "settings invalid", "errors": errors})
         settings.save(self.app.paths, new)
@@ -214,9 +211,6 @@ class Handler(BaseHTTPRequestHandler):
 
     def post_git_install(self, body: bytes) -> None:
         data = self._parse_json(body)
-        today = self.app.today or _dt.date.today()
-        if today < settings.GIT_PUBLIC_DATE:
-            return self._json(403, {"error": f"available from {settings.GIT_PUBLIC_DATE.isoformat()}"})
         if not (isinstance(data, dict) and data.get("approve") is True):
             return self._json(400, {"error": 'confirm with {"approve": true}'})
         if not self.app.install_lock.acquire(blocking=False):

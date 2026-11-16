@@ -1,17 +1,17 @@
-import { jsx as r, jsxs as a, Fragment as Q } from "react/jsx-runtime";
-import { useState as g, useEffect as oe, useRef as ce, useCallback as ee } from "react";
-import { useAppApi as de, useChatLauncher as he } from "@kirocrew/app-sdk";
-const X = "hauntlet-warden", pe = "hauntlet-warden", ue = `${X}/nightly-range-check`, M = `/apps/${X}/api`, re = 4e3, me = "Some client behaviours are out of reach of config.", we = (e) => e.get(`${M}/state`), ge = (e) => e.get(`${M}/history?limit=30`), fe = (e) => e.get(`${M}/drift`), xe = (e) => e.post(`${M}/drift/check`, {}), be = (e) => e.get(`${M}/summary`), ye = (e, n) => e.put(`${M}/settings`, n), ve = (e) => e.post(`${M}/git-install`, { approve: !0 });
-async function ke(e) {
-  return (await e.get("/api/crons")).jobs.find((t) => t.app === X && t.name === ue) ?? null;
+import { jsx as t, jsxs as a, Fragment as K } from "react/jsx-runtime";
+import { useState as g, useEffect as ne, useRef as le, useCallback as Q } from "react";
+import { useAppApi as ie, useChatLauncher as ce } from "@kirocrew/app-sdk";
+const Z = "hauntlet-warden", de = "hauntlet-warden", he = `${Z}/nightly-range-check`, M = `/apps/${Z}/api`, X = 4e3, pe = "Some client behaviours are out of reach of config.", ue = (e) => e.get(`${M}/state`), me = (e) => e.get(`${M}/history?limit=30`), we = (e) => e.get(`${M}/drift`), ge = (e) => e.post(`${M}/drift/check`, {}), fe = (e) => e.get(`${M}/summary`), xe = (e, n) => e.put(`${M}/settings`, n), be = (e) => e.post(`${M}/git-install`, { approve: !0 });
+async function ye(e) {
+  return (await e.get("/api/crons")).jobs.find((r) => r.app === Z && r.name === he) ?? null;
 }
-async function Ne(e, n) {
+async function ke(e, n) {
   await e.post(`${M}/run-request`, {}), await e.post(`/api/crons/${encodeURIComponent(n.id)}/run`, {});
 }
-const $e = (e, n, t) => e.post(`/api/crons/${encodeURIComponent(n.id)}/enable`, { enabled: t });
-function _e(e) {
+const ve = (e, n, r) => e.post(`/api/crons/${encodeURIComponent(n.id)}/enable`, { enabled: r });
+function Ne(e) {
   let n = e.trim() || "No run yet.";
-  return n.length > re && (n = n.slice(0, re) + `
+  return n.length > X && (n = n.slice(0, X) + `
 [summary truncated]`), [
     "Here is the current Hauntlet Warden summary. Answer my question from it only.",
     "",
@@ -23,53 +23,53 @@ function _e(e) {
   ].join(`
 `);
 }
-function Se(e) {
+function $e(e) {
   if (!e) return null;
   const n = e.split("/").pop() ?? "";
   return /^(autopsy-[a-z0-9-]+-(naive|hardened)-[A-Za-z0-9_-]{8,64}|exorcist-delta-[A-Za-z0-9_-]{8,64})\.html$/.test(n) ? `${M}/reports/${n}` : null;
 }
-function se(e, n = Date.now()) {
+function ae(e, n = Date.now()) {
   if (!e) return "—";
-  const t = Date.parse(e);
-  if (Number.isNaN(t)) return e;
-  const l = Math.round((n - t) / 1e3);
+  const r = Date.parse(e);
+  if (Number.isNaN(r)) return e;
+  const l = Math.round((n - r) / 1e3);
   if (l < 45) return "just now";
-  const h = Math.round(l / 60);
-  if (h < 60) return `${h} min ago`;
-  const o = Math.round(h / 60);
+  const p = Math.round(l / 60);
+  if (p < 60) return `${p} min ago`;
+  const o = Math.round(p / 60);
   return o < 36 ? `${o} h ago` : `${Math.round(o / 24)} days ago`;
 }
-function Ce(e) {
+function _e(e) {
   if (!e) return "";
   const n = new Date(e);
   return Number.isNaN(n.getTime()) ? e : n.toLocaleString(void 0, { dateStyle: "medium", timeStyle: "short" });
 }
 function W(e) {
-  const n = e instanceof Error ? e.message : String(e), t = n.match(/\{.*\}$/s);
-  if (t)
+  const n = e instanceof Error ? e.message : String(e), r = n.match(/\{.*\}$/s);
+  if (r)
     try {
-      const l = JSON.parse(t[0]);
+      const l = JSON.parse(r[0]);
       if (Array.isArray(l.errors) && l.errors.length) return l.errors.join("; ");
       if (l.error) return String(l.error);
     } catch {
     }
   return n;
 }
-const A = { fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round" }, Re = (e) => /* @__PURE__ */ r("svg", { viewBox: "0 0 24 24", ...A, className: e.className, "aria-hidden": "true", children: /* @__PURE__ */ r("polygon", { points: "6 4 20 12 6 20 6 4" }) }), ze = (e) => /* @__PURE__ */ a("svg", { viewBox: "0 0 24 24", ...A, className: e.className, "aria-hidden": "true", children: [
-  /* @__PURE__ */ r("path", { d: "M21 12a9 9 0 1 1-2.64-6.36" }),
-  /* @__PURE__ */ r("polyline", { points: "21 3 21 9 15 9" })
-] }), Me = (e) => /* @__PURE__ */ r("svg", { viewBox: "0 0 24 24", ...A, className: e.className, "aria-hidden": "true", children: /* @__PURE__ */ r("path", { d: "M21 12a8 8 0 0 1-11.6 7.1L4 21l1.9-5.4A8 8 0 1 1 21 12z" }) }), te = (e) => /* @__PURE__ */ a("svg", { viewBox: "0 0 24 24", ...A, className: e.className, "aria-hidden": "true", children: [
-  /* @__PURE__ */ r("path", { d: "M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z" }),
-  /* @__PURE__ */ r("polyline", { points: "9 12 11 14 15 10" })
-] }), Ae = (e) => /* @__PURE__ */ a("svg", { viewBox: "0 0 24 24", ...A, className: e.className, "aria-hidden": "true", children: [
-  /* @__PURE__ */ r("path", { d: "M5 21V10a7 7 0 0 1 14 0v11l-2.5-2-2.3 2-2.2-2-2.2 2-2.3-2L5 21z" }),
-  /* @__PURE__ */ r("circle", { cx: "9.5", cy: "10.5", r: "1", fill: "currentColor" }),
-  /* @__PURE__ */ r("circle", { cx: "14.5", cy: "10.5", r: "1", fill: "currentColor" })
-] }), le = (e) => /* @__PURE__ */ r("svg", { viewBox: "0 0 24 24", ...A, className: e.className, "aria-hidden": "true", children: /* @__PURE__ */ r("path", { d: "M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z" }) }), Le = (e) => /* @__PURE__ */ a("svg", { viewBox: "0 0 24 24", ...A, className: e.className, "aria-hidden": "true", children: [
-  /* @__PURE__ */ r("path", { d: "M14 4h6v6" }),
-  /* @__PURE__ */ r("path", { d: "M20 4l-9 9" }),
-  /* @__PURE__ */ r("path", { d: "M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5" })
-] }), Fe = (e) => /* @__PURE__ */ r("svg", { viewBox: "0 0 24 24", ...A, className: e.className, "aria-hidden": "true", children: /* @__PURE__ */ r("polyline", { points: "9 6 15 12 9 18" }) }), Ee = (e) => /* @__PURE__ */ r("svg", { viewBox: "0 0 24 24", ...A, className: e.className, "aria-hidden": "true", children: /* @__PURE__ */ r("path", { d: "M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" }) }), u = [
+const L = { fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round" }, Se = (e) => /* @__PURE__ */ t("svg", { viewBox: "0 0 24 24", ...L, className: e.className, "aria-hidden": "true", children: /* @__PURE__ */ t("polygon", { points: "6 4 20 12 6 20 6 4" }) }), Ce = (e) => /* @__PURE__ */ a("svg", { viewBox: "0 0 24 24", ...L, className: e.className, "aria-hidden": "true", children: [
+  /* @__PURE__ */ t("path", { d: "M21 12a9 9 0 1 1-2.64-6.36" }),
+  /* @__PURE__ */ t("polyline", { points: "21 3 21 9 15 9" })
+] }), Re = (e) => /* @__PURE__ */ t("svg", { viewBox: "0 0 24 24", ...L, className: e.className, "aria-hidden": "true", children: /* @__PURE__ */ t("path", { d: "M21 12a8 8 0 0 1-11.6 7.1L4 21l1.9-5.4A8 8 0 1 1 21 12z" }) }), ee = (e) => /* @__PURE__ */ a("svg", { viewBox: "0 0 24 24", ...L, className: e.className, "aria-hidden": "true", children: [
+  /* @__PURE__ */ t("path", { d: "M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z" }),
+  /* @__PURE__ */ t("polyline", { points: "9 12 11 14 15 10" })
+] }), ze = (e) => /* @__PURE__ */ a("svg", { viewBox: "0 0 24 24", ...L, className: e.className, "aria-hidden": "true", children: [
+  /* @__PURE__ */ t("path", { d: "M5 21V10a7 7 0 0 1 14 0v11l-2.5-2-2.3 2-2.2-2-2.2 2-2.3-2L5 21z" }),
+  /* @__PURE__ */ t("circle", { cx: "9.5", cy: "10.5", r: "1", fill: "currentColor" }),
+  /* @__PURE__ */ t("circle", { cx: "14.5", cy: "10.5", r: "1", fill: "currentColor" })
+] }), oe = (e) => /* @__PURE__ */ t("svg", { viewBox: "0 0 24 24", ...L, className: e.className, "aria-hidden": "true", children: /* @__PURE__ */ t("path", { d: "M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z" }) }), Me = (e) => /* @__PURE__ */ a("svg", { viewBox: "0 0 24 24", ...L, className: e.className, "aria-hidden": "true", children: [
+  /* @__PURE__ */ t("path", { d: "M14 4h6v6" }),
+  /* @__PURE__ */ t("path", { d: "M20 4l-9 9" }),
+  /* @__PURE__ */ t("path", { d: "M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5" })
+] }), Le = (e) => /* @__PURE__ */ t("svg", { viewBox: "0 0 24 24", ...L, className: e.className, "aria-hidden": "true", children: /* @__PURE__ */ t("polyline", { points: "9 6 15 12 9 18" }) }), Ae = (e) => /* @__PURE__ */ t("svg", { viewBox: "0 0 24 24", ...L, className: e.className, "aria-hidden": "true", children: /* @__PURE__ */ t("path", { d: "M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" }) }), u = [
   { id: "L0", name: "Clean", color: "#33D480" },
   { id: "L1", name: "Reached", color: "#EFE08A" },
   { id: "L2", name: "Echoed", color: "#FFC857" },
@@ -86,22 +86,22 @@ const A = { fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap:
   accentText: "#C59EFF",
   info: "#69A0F6"
 };
-function Te(e) {
+function Fe(e) {
   return u.find((n) => n.id === e) ?? null;
 }
-const Z = {
+const Y = {
   present: u[0].color,
   review: u[1].color,
   weaker: u[3].color,
   missing: u[4].color,
   "n/a": m.muted
-}, We = {
+}, Ee = {
   ok: { label: "All commands passed", color: u[0].color },
   failed: { label: "Selftest failed", color: u[4].color },
   error: { label: "Run had errors", color: u[3].color },
   not_configured: { label: "Not configured", color: m.muted },
   skipped: { label: "Skipped (already running)", color: m.muted }
-}, De = `
+}, Te = `
 .hw{--page:${m.page};--s1:${m.s1};--s2:${m.s2};--border:${m.border};--text:${m.text};--muted:${m.muted};
 --accent:${m.accent};--accent-text:${m.accentText};--info:${m.info};
 background:var(--page);color:var(--text);min-height:100%;flex:1;overflow-y:auto;
@@ -219,104 +219,104 @@ font:12px ui-monospace,SFMono-Regular,Menlo,monospace;cursor:pointer;user-select
 function B(e, n) {
   return n <= 1 ? z / 2 : N + e * (z - 2 * N) / (n - 1);
 }
-function He({ points: e }) {
-  const n = e.length, t = (s) => R - N - s * (R - 2 * N) / 4, l = e.map((s) => s != null && s.worst ? Number(s.worst.slice(1)) : null);
-  let h = "";
+function We({ points: e }) {
+  const n = e.length, r = (s) => R - N - s * (R - 2 * N) / 4, l = e.map((s) => s != null && s.worst ? Number(s.worst.slice(1)) : null);
+  let p = "";
   l.forEach((s, i) => {
     if (s === null) return;
     const c = l.slice(0, i).reverse().find((w) => w !== null);
-    h += c == null ? `M${B(i, n)},${t(s)}` : ` H${B(i, n)} V${t(s)}`;
+    p += c == null ? `M${B(i, n)},${r(s)}` : ` H${B(i, n)} V${r(s)}`;
   });
   const o = l.filter((s) => s !== null).map((s) => `L${s}`).join(", ");
   return /* @__PURE__ */ a("svg", { className: "hw-spark", width: z, height: R, viewBox: `0 0 ${z} ${R}`, role: "img", "aria-label": `Worst level over the last ${n} runs: ${o || "none"}`, children: [
-    [0, 1, 2, 3, 4].map((s) => /* @__PURE__ */ r("line", { x1: N, x2: z - N, y1: t(s), y2: t(s), stroke: m.border, strokeWidth: s === 0 || s === 4 ? 1 : 0.5, strokeDasharray: s === 0 || s === 4 ? "" : "2 3" }, s)),
-    /* @__PURE__ */ r("path", { d: h, fill: "none", stroke: m.muted, strokeWidth: 1.25 }),
+    [0, 1, 2, 3, 4].map((s) => /* @__PURE__ */ t("line", { x1: N, x2: z - N, y1: r(s), y2: r(s), stroke: m.border, strokeWidth: s === 0 || s === 4 ? 1 : 0.5, strokeDasharray: s === 0 || s === 4 ? "" : "2 3" }, s)),
+    /* @__PURE__ */ t("path", { d: p, fill: "none", stroke: m.muted, strokeWidth: 1.25 }),
     l.map(
-      (s, i) => s === null ? /* @__PURE__ */ r("circle", { cx: B(i, n), cy: R / 2, r: 2, fill: "none", stroke: m.muted, strokeWidth: 1 }, i) : /* @__PURE__ */ r("circle", { cx: B(i, n), cy: t(s), r: i === n - 1 ? 3.4 : 2.3, fill: u[s].color, children: /* @__PURE__ */ r("title", { children: `L${s} ${u[s].name}` }) }, i)
+      (s, i) => s === null ? /* @__PURE__ */ t("circle", { cx: B(i, n), cy: R / 2, r: 2, fill: "none", stroke: m.muted, strokeWidth: 1 }, i) : /* @__PURE__ */ t("circle", { cx: B(i, n), cy: r(s), r: i === n - 1 ? 3.4 : 2.3, fill: u[s].color, children: /* @__PURE__ */ t("title", { children: `L${s} ${u[s].name}` }) }, i)
     )
   ] });
 }
-function Oe({ points: e }) {
-  const n = e.length, t = (i) => R - N - i * (R - 2 * N), l = e.map((i) => typeof (i == null ? void 0 : i.pass_k) == "number" ? i.pass_k : null), h = l.map((i, c) => i === null ? null : `${B(c, n)},${t(i)}`).filter(Boolean), o = l[l.length - 1], s = o == null ? m.muted : o >= 0.999 ? u[0].color : o > 0 ? u[2].color : u[4].color;
+function De({ points: e }) {
+  const n = e.length, r = (i) => R - N - i * (R - 2 * N), l = e.map((i) => typeof (i == null ? void 0 : i.pass_k) == "number" ? i.pass_k : null), p = l.map((i, c) => i === null ? null : `${B(c, n)},${r(i)}`).filter(Boolean), o = l[l.length - 1], s = o == null ? m.muted : o >= 0.999 ? u[0].color : o > 0 ? u[2].color : u[4].color;
   return /* @__PURE__ */ a("svg", { className: "hw-spark", width: z, height: R, viewBox: `0 0 ${z} ${R}`, role: "img", "aria-label": `pass^k over the last ${n} runs`, children: [
-    /* @__PURE__ */ r("line", { x1: N, x2: z - N, y1: t(1), y2: t(1), stroke: m.border, strokeWidth: 1 }),
-    /* @__PURE__ */ r("line", { x1: N, x2: z - N, y1: t(0), y2: t(0), stroke: m.border, strokeWidth: 1 }),
-    h.length > 1 && /* @__PURE__ */ r("polyline", { points: h.join(" "), fill: "none", stroke: s, strokeWidth: 1.5 }),
-    l.map((i, c) => i === null ? null : /* @__PURE__ */ r("circle", { cx: B(c, n), cy: t(i), r: c === n - 1 ? 3 : 1.6, fill: s }, c))
+    /* @__PURE__ */ t("line", { x1: N, x2: z - N, y1: r(1), y2: r(1), stroke: m.border, strokeWidth: 1 }),
+    /* @__PURE__ */ t("line", { x1: N, x2: z - N, y1: r(0), y2: r(0), stroke: m.border, strokeWidth: 1 }),
+    p.length > 1 && /* @__PURE__ */ t("polyline", { points: p.join(" "), fill: "none", stroke: s, strokeWidth: 1.5 }),
+    l.map((i, c) => i === null ? null : /* @__PURE__ */ t("circle", { cx: B(c, n), cy: r(i), r: c === n - 1 ? 3 : 1.6, fill: s }, c))
   ] });
 }
-function Ie({ id: e, outline: n }) {
-  const t = Te(e);
-  return t ? n ? /* @__PURE__ */ a("span", { className: "hw-chip line", style: { color: t.color }, children: [
-    /* @__PURE__ */ r("span", { className: "dot" }),
-    t.id,
+function He({ id: e, outline: n }) {
+  const r = Fe(e);
+  return r ? n ? /* @__PURE__ */ a("span", { className: "hw-chip line", style: { color: r.color }, children: [
+    /* @__PURE__ */ t("span", { className: "dot" }),
+    r.id,
     " ",
-    t.name
-  ] }) : /* @__PURE__ */ a("span", { className: "hw-chip fill", style: { background: t.color }, title: `${t.id} ${t.name}`, children: [
-    t.id,
+    r.name
+  ] }) : /* @__PURE__ */ a("span", { className: "hw-chip fill", style: { background: r.color }, title: `${r.id} ${r.name}`, children: [
+    r.id,
     " ",
-    t.name
-  ] }) : /* @__PURE__ */ r("span", { className: "hw-chip line", style: { color: m.muted }, children: "no result" });
+    r.name
+  ] }) : /* @__PURE__ */ t("span", { className: "hw-chip line", style: { color: m.muted }, children: "no result" });
 }
-function V({ icon: e, title: n, children: t }) {
+function j({ icon: e, title: n, children: r }) {
   return /* @__PURE__ */ a("div", { className: "hw-empty", children: [
-    /* @__PURE__ */ r("div", { className: "glyph", children: e }),
+    /* @__PURE__ */ t("div", { className: "glyph", children: e }),
     /* @__PURE__ */ a("div", { children: [
-      /* @__PURE__ */ r("h3", { children: n }),
-      t
+      /* @__PURE__ */ t("h3", { children: n }),
+      r
     ] })
   ] });
 }
-function Y({ title: e, colour: n, big: t, small: l }) {
+function G({ title: e, colour: n, big: r, small: l }) {
   return /* @__PURE__ */ a("div", { className: "hw-tile", style: { "--tile": n ?? m.border }, children: [
-    /* @__PURE__ */ r("h3", { children: e }),
-    /* @__PURE__ */ r("div", { className: "big", children: t }),
-    l && /* @__PURE__ */ r("div", { className: "small", children: l })
+    /* @__PURE__ */ t("h3", { children: e }),
+    /* @__PURE__ */ t("div", { className: "big", children: r }),
+    l && /* @__PURE__ */ t("div", { className: "small", children: l })
   ] });
 }
-function Be({ state: e, job: n }) {
-  var c, w, d, b, v, x;
-  const t = e.latest, l = t ? We[t.status] ?? { label: t.status, color: m.muted } : null, h = (c = t == null ? void 0 : t.selftest) == null ? void 0 : c.passed, o = (t == null ? void 0 : t.drift) ?? null, s = (o == null ? void 0 : o.status) ?? e.drift.status, i = n === void 0 ? "checking…" : n === null ? "not registered" : n.user_paused || n.enabled === !1 ? "paused" : "on";
+function Oe({ state: e, job: n }) {
+  var c, w, h, b, y, x;
+  const r = e.latest, l = r ? Ee[r.status] ?? { label: r.status, color: m.muted } : null, p = (c = r == null ? void 0 : r.selftest) == null ? void 0 : c.passed, o = (r == null ? void 0 : r.drift) ?? null, s = (o == null ? void 0 : o.status) ?? e.drift.status, i = n === void 0 ? "checking…" : n === null ? "not registered" : n.user_paused || n.enabled === !1 ? "paused" : "on";
   return /* @__PURE__ */ a("div", { className: "hw-tiles", children: [
-    /* @__PURE__ */ r(
-      Y,
+    /* @__PURE__ */ t(
+      G,
       {
         title: "Last run",
         colour: l == null ? void 0 : l.color,
-        big: t ? se(t.finished_at || t.started_at) : "No run yet",
-        small: t ? `${Ce(t.finished_at || t.started_at)} · ${t.trigger === "manual" ? "Run now" : "scheduled"}` : `Nightly check: ${i}`
+        big: r ? ae(r.finished_at || r.started_at) : "No run yet",
+        small: r ? `${_e(r.finished_at || r.started_at)} · ${r.trigger === "manual" ? "Run now" : "scheduled"}` : `Nightly check: ${i}`
       }
     ),
-    /* @__PURE__ */ r(
-      Y,
+    /* @__PURE__ */ t(
+      G,
       {
         title: "Status",
         colour: l == null ? void 0 : l.color,
-        big: /* @__PURE__ */ r("span", { style: { color: (l == null ? void 0 : l.color) ?? m.muted }, children: l ? l.label : "—" }),
-        small: (t == null ? void 0 : t.reason) ?? (t ? `Nightly check: ${i}${n != null && n.schedule ? ` · ${n.schedule}` : ""}` : "Nothing has run yet")
+        big: /* @__PURE__ */ t("span", { style: { color: (l == null ? void 0 : l.color) ?? m.muted }, children: l ? l.label : "—" }),
+        small: (r == null ? void 0 : r.reason) ?? (r ? `Nightly check: ${i}${n != null && n.schedule ? ` · ${n.schedule}` : ""}` : "Nothing has run yet")
       }
     ),
-    /* @__PURE__ */ r(
-      Y,
+    /* @__PURE__ */ t(
+      G,
       {
         title: "Selftest",
-        colour: h === !0 ? u[0].color : h === !1 ? u[4].color : void 0,
-        big: h === !0 ? "Passed" : h === !1 ? "Failed" : "—",
-        small: h === !1 ? `${((d = (w = t == null ? void 0 : t.selftest) == null ? void 0 : w.failures) == null ? void 0 : d.length) ?? 0} failure(s)` : ((v = (b = t == null ? void 0 : t.selftest) == null ? void 0 : b.summary) == null ? void 0 : v.replace(/^selftest passed: /, "")) || "naive ≥ L3, hardened L0 + Detected"
+        colour: p === !0 ? u[0].color : p === !1 ? u[4].color : void 0,
+        big: p === !0 ? "Passed" : p === !1 ? "Failed" : "—",
+        small: p === !1 ? `${((h = (w = r == null ? void 0 : r.selftest) == null ? void 0 : w.failures) == null ? void 0 : h.length) ?? 0} failure(s)` : ((y = (b = r == null ? void 0 : r.selftest) == null ? void 0 : b.summary) == null ? void 0 : y.replace(/^selftest passed: /, "")) || "naive ≥ L3, hardened L0 + Detected"
       }
     ),
-    /* @__PURE__ */ r(
-      Y,
+    /* @__PURE__ */ t(
+      G,
       {
         title: "Guardrail drift",
-        colour: s ? Z[s] : void 0,
-        big: /* @__PURE__ */ r("span", { style: { color: s ? Z[s] ?? m.text : m.muted }, children: Pe(s) }),
+        colour: s ? Y[s] : void 0,
+        big: /* @__PURE__ */ t("span", { style: { color: s ? Y[s] ?? m.text : m.muted }, children: Be(s) }),
         small: (o == null ? void 0 : o.workspace) || e.drift.workspace || ((x = e.settings) == null ? void 0 : x.watched_workspace) || "No workspace watched"
       }
     )
   ] });
 }
-function Pe(e) {
+function Be(e) {
   switch (e) {
     case "present":
       return "All guardrails present";
@@ -338,434 +338,433 @@ function Pe(e) {
       return "—";
   }
 }
-function je() {
-  return /* @__PURE__ */ r("div", { className: "hw-legend", "aria-label": "Level colours", children: u.map((e) => /* @__PURE__ */ a("span", { className: "hw-chip line", style: { color: e.color }, children: [
-    /* @__PURE__ */ r("span", { className: "dot" }),
+function Ie() {
+  return /* @__PURE__ */ t("div", { className: "hw-legend", "aria-label": "Level colours", children: u.map((e) => /* @__PURE__ */ a("span", { className: "hw-chip line", style: { color: e.color }, children: [
+    /* @__PURE__ */ t("span", { className: "dot" }),
     e.id,
     " ",
     e.name
   ] }, e.id)) });
 }
-function ne({ now: e, series: n }) {
+function te({ now: e, series: n }) {
   if (e != null && e.error)
     return /* @__PURE__ */ a("div", { className: "hw-cell", children: [
-      /* @__PURE__ */ r("span", { className: "hw-chip line", style: { color: u[3].color }, children: "error" }),
-      /* @__PURE__ */ r("span", { className: "hw-help", children: e.error.split(":")[0] })
+      /* @__PURE__ */ t("span", { className: "hw-chip line", style: { color: u[3].color }, children: "error" }),
+      /* @__PURE__ */ t("span", { className: "hw-help", children: e.error.split(":")[0] })
     ] });
-  const t = e == null ? void 0 : e.k;
+  const r = e == null ? void 0 : e.k;
   return /* @__PURE__ */ a("div", { className: "hw-cell", children: [
     /* @__PURE__ */ a("div", { className: "hw-stack", children: [
-      /* @__PURE__ */ r(Ie, { id: e == null ? void 0 : e.worst }),
-      /* @__PURE__ */ r("span", { className: "hw-num", title: t ? `pass^${t}: the chance that ${t} runs in a row are all clean` : "no pass^k printed", children: typeof (e == null ? void 0 : e.pass_k) == "number" ? /* @__PURE__ */ a(Q, { children: [
+      /* @__PURE__ */ t(He, { id: e == null ? void 0 : e.worst }),
+      /* @__PURE__ */ t("span", { className: "hw-num", title: r ? `pass^${r}: the chance that ${r} runs in a row are all clean` : "no pass^k printed", children: typeof (e == null ? void 0 : e.pass_k) == "number" ? /* @__PURE__ */ a(K, { children: [
         "pass^",
-        t,
+        r,
         " ",
-        /* @__PURE__ */ r("b", { children: e.pass_k.toFixed(2) })
-      ] }) : /* @__PURE__ */ r("span", { className: "k", children: "pass^k n/a" }) })
+        /* @__PURE__ */ t("b", { children: e.pass_k.toFixed(2) })
+      ] }) : /* @__PURE__ */ t("span", { className: "k", children: "pass^k n/a" }) })
     ] }),
     /* @__PURE__ */ a("div", { className: "hw-stack", style: { gap: 2 }, children: [
-      /* @__PURE__ */ r(He, { points: n }),
-      /* @__PURE__ */ r(Oe, { points: n })
+      /* @__PURE__ */ t(We, { points: n }),
+      /* @__PURE__ */ t(De, { points: n })
     ] })
   ] });
 }
-function Ue({ state: e, history: n }) {
-  const t = e.latest, l = t != null && t.rooms && Object.keys(t.rooms).length ? Object.keys(t.rooms) : [], h = /* @__PURE__ */ new Set();
+function Pe({ state: e, history: n }) {
+  const r = e.latest, l = r != null && r.rooms && Object.keys(r.rooms).length ? Object.keys(r.rooms) : [], p = /* @__PURE__ */ new Set();
   l.forEach((s) => ["naive", "hardened"].forEach((i) => {
-    var w, d, b;
-    const c = (b = (d = (w = t == null ? void 0 : t.rooms) == null ? void 0 : w[s]) == null ? void 0 : d[i]) == null ? void 0 : b.k;
-    c && h.add(c);
+    var w, h, b;
+    const c = (b = (h = (w = r == null ? void 0 : r.rooms) == null ? void 0 : w[s]) == null ? void 0 : h[i]) == null ? void 0 : b.k;
+    c && p.add(c);
   }));
-  const o = h.size === 1 ? `pass^${[...h][0]}` : "pass^k";
+  const o = p.size === 1 ? `pass^${[...p][0]}` : "pass^k";
   return /* @__PURE__ */ a("section", { className: "hw-card", "aria-labelledby": "hw-rooms", children: [
     /* @__PURE__ */ a("div", { className: "hw-card-head", children: [
       /* @__PURE__ */ a("div", { children: [
-        /* @__PURE__ */ r("h2", { id: "hw-rooms", children: "Range, room by room" }),
+        /* @__PURE__ */ t("h2", { id: "hw-rooms", children: "Range, room by room" }),
         /* @__PURE__ */ a("p", { children: [
           "Worst level and ",
           o,
           " for the two reference agents, over the last ",
           n.length || 0,
           " runs.",
-          h.size === 1 ? ` k = ${[...h][0]}: Hauntlet prints pass^k for k in 1, 2, 4, 8 up to the number of runs.` : ""
+          p.size === 1 ? ` k = ${[...p][0]}: Hauntlet prints pass^k for k in 1, 2, 4, 8 up to the number of runs.` : ""
         ] })
       ] }),
-      /* @__PURE__ */ r(je, {})
+      /* @__PURE__ */ t(Ie, {})
     ] }),
-    /* @__PURE__ */ r("div", { className: "hw-card-body", children: l.length === 0 ? /* @__PURE__ */ r(V, { icon: /* @__PURE__ */ r(le, {}), title: t ? "This run has no room results" : "No range results yet", children: /* @__PURE__ */ r("p", { children: t != null && t.reason ? t.reason : "The first nightly run fills this table: selftest, then naive and hardened in every room. Press Run now to fill it right away; it takes a few seconds and uses no credits." }) }) : /* @__PURE__ */ a("table", { className: "hw-table", children: [
-      /* @__PURE__ */ r("thead", { children: /* @__PURE__ */ a("tr", { children: [
-        /* @__PURE__ */ r("th", { children: "Room" }),
-        /* @__PURE__ */ r("th", { children: "naive · expected high" }),
-        /* @__PURE__ */ r("th", { children: "hardened · expected L0" }),
-        /* @__PURE__ */ r("th", { children: "Scorecards" })
+    /* @__PURE__ */ t("div", { className: "hw-card-body", children: l.length === 0 ? /* @__PURE__ */ t(j, { icon: /* @__PURE__ */ t(oe, {}), title: r ? "This run has no room results" : "No range results yet", children: /* @__PURE__ */ t("p", { children: r != null && r.reason ? r.reason : "The first nightly run fills this table: selftest, then naive and hardened in every room. Press Run now to fill it right away; it takes a few seconds and uses no credits." }) }) : /* @__PURE__ */ a("table", { className: "hw-table", children: [
+      /* @__PURE__ */ t("thead", { children: /* @__PURE__ */ a("tr", { children: [
+        /* @__PURE__ */ t("th", { children: "Room" }),
+        /* @__PURE__ */ t("th", { children: "naive · expected high" }),
+        /* @__PURE__ */ t("th", { children: "hardened · expected L0" }),
+        /* @__PURE__ */ t("th", { children: "Scorecards" })
       ] }) }),
-      /* @__PURE__ */ r("tbody", { children: l.map((s) => {
-        var b, v, x, k, _;
+      /* @__PURE__ */ t("tbody", { children: l.map((s) => {
+        var b, y, x, k, $;
         const i = (D) => n.map((E) => {
           var H, C;
           return (C = (H = E.rooms) == null ? void 0 : H[s]) == null ? void 0 : C[D];
-        }), c = (v = (b = t == null ? void 0 : t.rooms) == null ? void 0 : b[s]) == null ? void 0 : v.naive, w = (k = (x = t == null ? void 0 : t.rooms) == null ? void 0 : x[s]) == null ? void 0 : k.hardened, d = (_ = t == null ? void 0 : t.demos) == null ? void 0 : _[s];
+        }), c = (y = (b = r == null ? void 0 : r.rooms) == null ? void 0 : b[s]) == null ? void 0 : y.naive, w = (k = (x = r == null ? void 0 : r.rooms) == null ? void 0 : x[s]) == null ? void 0 : k.hardened, h = ($ = r == null ? void 0 : r.demos) == null ? void 0 : $[s];
         return /* @__PURE__ */ a("tr", { children: [
           /* @__PURE__ */ a("td", { className: "hw-room", children: [
             s,
-            /* @__PURE__ */ r("small", { children: d != null && d.after_worst ? `Exorcist demo ${d.before_worst} → ${d.after_worst}` : s === "parlor" ? "no Exorcist demo for this room" : "" })
+            /* @__PURE__ */ t("small", { children: h != null && h.after_worst ? `Exorcist demo ${h.before_worst} → ${h.after_worst}` : s === "parlor" ? "no Exorcist demo for this room" : "" })
           ] }),
-          /* @__PURE__ */ r("td", { children: /* @__PURE__ */ r(ne, { now: c, series: i("naive") }) }),
-          /* @__PURE__ */ r("td", { children: /* @__PURE__ */ r(ne, { now: w, series: i("hardened") }) }),
-          /* @__PURE__ */ r("td", { children: /* @__PURE__ */ a("div", { className: "hw-links", children: [
-            /* @__PURE__ */ r(K, { path: c == null ? void 0 : c.report, label: "naive" }),
-            /* @__PURE__ */ r(K, { path: w == null ? void 0 : w.report, label: "hardened" }),
-            (d == null ? void 0 : d.report) && /* @__PURE__ */ r(K, { path: d.report, label: "exorcism" })
+          /* @__PURE__ */ t("td", { children: /* @__PURE__ */ t(te, { now: c, series: i("naive") }) }),
+          /* @__PURE__ */ t("td", { children: /* @__PURE__ */ t(te, { now: w, series: i("hardened") }) }),
+          /* @__PURE__ */ t("td", { children: /* @__PURE__ */ a("div", { className: "hw-links", children: [
+            /* @__PURE__ */ t(J, { path: c == null ? void 0 : c.report, label: "naive" }),
+            /* @__PURE__ */ t(J, { path: w == null ? void 0 : w.report, label: "hardened" }),
+            (h == null ? void 0 : h.report) && /* @__PURE__ */ t(J, { path: h.report, label: "exorcism" })
           ] }) })
         ] }, s);
       }) })
     ] }) })
   ] });
 }
-function K({ path: e, label: n }) {
-  const t = Se(e);
-  return !t || !e ? null : /* @__PURE__ */ a("span", { className: "hw-rep", children: [
-    /* @__PURE__ */ a("a", { className: "hw-link", href: t, target: "_blank", rel: "noopener noreferrer", title: `Open ${n} scorecard`, children: [
+function J({ path: e, label: n }) {
+  const r = $e(e);
+  return !r || !e ? null : /* @__PURE__ */ a("span", { className: "hw-rep", children: [
+    /* @__PURE__ */ a("a", { className: "hw-link", href: r, target: "_blank", rel: "noopener noreferrer", title: `Open ${n} scorecard`, children: [
       n,
-      /* @__PURE__ */ r(Le, {})
+      /* @__PURE__ */ t(Me, {})
     ] }),
-    /* @__PURE__ */ r("span", { className: "hw-path", title: e, children: e.split("/").pop() })
+    /* @__PURE__ */ t("span", { className: "hw-path", title: e, children: e.split("/").pop() })
   ] });
 }
-function Ge({ run: e }) {
+function je({ run: e }) {
   const n = (e == null ? void 0 : e.errors) ?? [];
   return n.length ? /* @__PURE__ */ a("section", { className: "hw-card", "aria-labelledby": "hw-errs", children: [
-    /* @__PURE__ */ r("div", { className: "hw-card-head", children: /* @__PURE__ */ a("div", { children: [
-      /* @__PURE__ */ r("h2", { id: "hw-errs", children: "What did not complete" }),
-      /* @__PURE__ */ r("p", { children: "Later commands still ran. Fix the first one and press Run now." })
+    /* @__PURE__ */ t("div", { className: "hw-card-head", children: /* @__PURE__ */ a("div", { children: [
+      /* @__PURE__ */ t("h2", { id: "hw-errs", children: "What did not complete" }),
+      /* @__PURE__ */ t("p", { children: "Later commands still ran. Fix the first one and press Run now." })
     ] }) }),
-    /* @__PURE__ */ r("div", { className: "hw-card-body hw-errlist", style: { paddingTop: 14 }, children: n.map((t, l) => /* @__PURE__ */ a("div", { className: "hw-err", children: [
+    /* @__PURE__ */ t("div", { className: "hw-card-body hw-errlist", style: { paddingTop: 14 }, children: n.map((r, l) => /* @__PURE__ */ a("div", { className: "hw-err", children: [
       /* @__PURE__ */ a("div", { className: "cmd", children: [
-        t.command,
+        r.command,
         " · ",
-        t.kind
+        r.kind
       ] }),
-      /* @__PURE__ */ r("div", { className: "msg", children: t.detail })
+      /* @__PURE__ */ t("div", { className: "msg", children: r.detail })
     ] }, l)) })
   ] }) : null;
 }
-function Ve({ drift: e, settings: n, busy: t, onCheck: l }) {
+function Ue({ drift: e, settings: n, busy: r, onCheck: l }) {
   var s;
-  const h = e != null && e.files ? Object.entries(e.files) : [], o = (e == null ? void 0 : e.workspace) || (n == null ? void 0 : n.watched_workspace);
+  const p = e != null && e.files ? Object.entries(e.files) : [], o = (e == null ? void 0 : e.workspace) || (n == null ? void 0 : n.watched_workspace);
   return /* @__PURE__ */ a("section", { className: "hw-card", "aria-labelledby": "hw-drift", children: [
     /* @__PURE__ */ a("div", { className: "hw-card-head", children: [
       /* @__PURE__ */ a("div", { children: [
-        /* @__PURE__ */ r("h2", { id: "hw-drift", children: "Guardrail drift" }),
-        /* @__PURE__ */ r("p", { children: o ? /* @__PURE__ */ a(Q, { children: [
+        /* @__PURE__ */ t("h2", { id: "hw-drift", children: "Guardrail drift" }),
+        /* @__PURE__ */ t("p", { children: o ? /* @__PURE__ */ a(K, { children: [
           "Read-only comparison of ",
           /* @__PURE__ */ a("span", { className: "hw-path", children: [
             o,
             "/.kiro"
           ] }),
           " with what the Exorcist generates",
-          e != null && e.checked_at ? `, checked ${se(e.checked_at)}` : "",
+          e != null && e.checked_at ? `, checked ${ae(e.checked_at)}` : "",
           "."
         ] }) : "Compares one workspace’s .kiro/ with the guardrails the Exorcist generates. Warden never writes to it." })
       ] }),
-      /* @__PURE__ */ a("button", { className: "hw-btn small", onClick: l, disabled: t || !(n != null && n.watched_workspace), children: [
-        /* @__PURE__ */ r(ze, { className: t ? "hw-spin" : "" }),
+      /* @__PURE__ */ a("button", { className: "hw-btn small", onClick: l, disabled: r || !(n != null && n.watched_workspace), children: [
+        /* @__PURE__ */ t(Ce, { className: r ? "hw-spin" : "" }),
         "Check drift now"
       ] })
     ] }),
     /* @__PURE__ */ a("div", { className: "hw-card-body", children: [
-      n != null && n.watched_workspace ? (e == null ? void 0 : e.status) === "no reference yet" || !h.length && !(e != null && e.error) && (e == null ? void 0 : e.status) !== "n/a" ? /* @__PURE__ */ r(V, { icon: /* @__PURE__ */ r(te, {}), title: "No reference yet", children: /* @__PURE__ */ r("p", { children: "The reference comes from the Exorcist demo bundles that each nightly run generates. Run the range once, then drift appears here." }) }) : (e == null ? void 0 : e.status) === "error" ? /* @__PURE__ */ r(V, { icon: /* @__PURE__ */ r(te, {}), title: "Could not check this workspace", children: /* @__PURE__ */ r("p", { children: e.error || "Unknown error" }) }) : /* @__PURE__ */ r("div", { className: "hw-files", children: h.map(([i, c]) => {
-        const w = c.items.filter((d) => d.status !== "present" && d.status !== "n/a").length;
+      n != null && n.watched_workspace ? (e == null ? void 0 : e.status) === "no reference yet" || !p.length && !(e != null && e.error) && (e == null ? void 0 : e.status) !== "n/a" ? /* @__PURE__ */ t(j, { icon: /* @__PURE__ */ t(ee, {}), title: "No reference yet", children: /* @__PURE__ */ t("p", { children: "The reference comes from the Exorcist demo bundles that each nightly run generates. Run the range once, then drift appears here." }) }) : (e == null ? void 0 : e.status) === "error" ? /* @__PURE__ */ t(j, { icon: /* @__PURE__ */ t(ee, {}), title: "Could not check this workspace", children: /* @__PURE__ */ t("p", { children: e.error || "Unknown error" }) }) : /* @__PURE__ */ t("div", { className: "hw-files", children: p.map(([i, c]) => {
+        const w = c.items.filter((h) => h.status !== "present" && h.status !== "n/a").length;
         return /* @__PURE__ */ a("details", { className: "hw-file", open: c.status === "missing" || c.status === "weaker", children: [
           /* @__PURE__ */ a("summary", { children: [
-            /* @__PURE__ */ r(Fe, { className: "hw-caret" }),
-            /* @__PURE__ */ r("span", { className: "name", children: i }),
-            /* @__PURE__ */ r("span", { className: "count", children: w ? `${w} of ${c.items.length} need attention` : `${c.items.length} checked` }),
-            /* @__PURE__ */ r(ae, { status: c.status })
+            /* @__PURE__ */ t(Le, { className: "hw-caret" }),
+            /* @__PURE__ */ t("span", { className: "name", children: i }),
+            /* @__PURE__ */ t("span", { className: "count", children: w ? `${w} of ${c.items.length} need attention` : `${c.items.length} checked` }),
+            /* @__PURE__ */ t(re, { status: c.status })
           ] }),
-          /* @__PURE__ */ r("div", { className: "hw-items", children: c.items.map((d) => /* @__PURE__ */ a("div", { className: "hw-item", children: [
-            /* @__PURE__ */ r("span", { className: "rule", children: d.item.includes("#") ? d.item.split("#").pop() : d.item.split("/").pop() }),
-            /* @__PURE__ */ r("span", { children: /* @__PURE__ */ r(ae, { status: d.status }) }),
+          /* @__PURE__ */ t("div", { className: "hw-items", children: c.items.map((h) => /* @__PURE__ */ a("div", { className: "hw-item", children: [
+            /* @__PURE__ */ t("span", { className: "rule", children: h.item.includes("#") ? h.item.split("#").pop() : h.item.split("/").pop() }),
+            /* @__PURE__ */ t("span", { children: /* @__PURE__ */ t(re, { status: h.status }) }),
             /* @__PURE__ */ a("div", { children: [
-              /* @__PURE__ */ r("div", { className: "detail", children: d.detail || qe(d.status) }),
+              /* @__PURE__ */ t("div", { className: "detail", children: h.detail || Ge(h.status) }),
               /* @__PURE__ */ a("div", { className: "rooms", children: [
                 "generated for ",
-                d.rooms.join(", ")
+                h.rooms.join(", ")
               ] })
             ] })
-          ] }, d.item)) })
+          ] }, h.item)) })
         ] }, i);
-      }) }) : /* @__PURE__ */ r(V, { icon: /* @__PURE__ */ r(Ee, {}), title: "No workspace watched", children: /* @__PURE__ */ r("p", { children: "Set a workspace path in Settings below. Warden reads its .kiro/ steering, hooks, mcp.json and sandbox.json, and reports what is missing or weaker, file by file." }) }),
-      !!((s = e == null ? void 0 : e.warnings) != null && s.length) && /* @__PURE__ */ r("div", { className: "hw-warn", role: "note", children: e.warnings.map((i) => /* @__PURE__ */ a("span", { children: [
+      }) }) : /* @__PURE__ */ t(j, { icon: /* @__PURE__ */ t(Ae, {}), title: "No workspace watched", children: /* @__PURE__ */ t("p", { children: "Set a workspace path in Settings below. Warden reads its .kiro/ steering, hooks, mcp.json and sandbox.json, and reports what is missing or weaker, file by file." }) }),
+      !!((s = e == null ? void 0 : e.warnings) != null && s.length) && /* @__PURE__ */ t("div", { className: "hw-warn", role: "note", children: e.warnings.map((i) => /* @__PURE__ */ a("span", { children: [
         "⚠ ",
         i
       ] }, i)) }),
-      /* @__PURE__ */ r("p", { className: "hw-note", children: me })
+      /* @__PURE__ */ t("p", { className: "hw-note", children: pe })
     ] })
   ] });
 }
-function qe(e) {
+function Ge(e) {
   return e === "present" ? "Matches the generated guardrail." : e === "n/a" ? "Nothing here to compare." : "";
 }
-function ae({ status: e }) {
-  const n = Z[e] ?? m.muted;
-  return e === "n/a" ? /* @__PURE__ */ r("span", { className: "hw-chip line", style: { color: n }, children: "n/a" }) : /* @__PURE__ */ r("span", { className: "hw-chip fill", style: { background: n }, children: e });
+function re({ status: e }) {
+  const n = Y[e] ?? m.muted;
+  return e === "n/a" ? /* @__PURE__ */ t("span", { className: "hw-chip line", style: { color: n }, children: "n/a" }) : /* @__PURE__ */ t("span", { className: "hw-chip fill", style: { background: n }, children: e });
 }
-function Je({ errors: e, settings: n, onOpenSettings: t }) {
-  const l = !!(n != null && n.hauntlet_checkout) && !e.some((h) => /checkout/i.test(h));
-  return /* @__PURE__ */ r("div", { className: "hw-hero", children: /* @__PURE__ */ a(V, { icon: /* @__PURE__ */ r(Ae, {}), title: "Point Warden at your Hauntlet checkout", children: [
-    /* @__PURE__ */ r("p", { children: "Warden runs Hauntlet’s model-free checks every night at 03:00 and watches one workspace’s guardrails. Nothing it runs uses a model or credits." }),
+function Ve({ errors: e, settings: n, onOpenSettings: r }) {
+  const l = !!(n != null && n.hauntlet_checkout) && !e.some((p) => /checkout/i.test(p));
+  return /* @__PURE__ */ t("div", { className: "hw-hero", children: /* @__PURE__ */ a(j, { icon: /* @__PURE__ */ t(ze, {}), title: "Point Warden at your Hauntlet checkout", children: [
+    /* @__PURE__ */ t("p", { children: "Warden runs Hauntlet’s model-free checks every night at 03:00 and watches one workspace’s guardrails. Nothing it runs uses a model or credits." }),
     /* @__PURE__ */ a("ol", { className: "hw-steps", children: [
       /* @__PURE__ */ a("li", { className: l ? "done" : "", children: [
         "Set the path to your local Hauntlet checkout (run ",
-        /* @__PURE__ */ r("code", { children: "uv sync" }),
+        /* @__PURE__ */ t("code", { children: "uv sync" }),
         " there first)."
       ] }),
-      /* @__PURE__ */ r("li", { className: n != null && n.watched_workspace ? "done" : "", children: "Optionally, set a workspace whose .kiro/ guardrails Warden should watch." }),
-      /* @__PURE__ */ r("li", { children: "Save, then press Run now or turn on the nightly check." })
+      /* @__PURE__ */ t("li", { className: n != null && n.watched_workspace ? "done" : "", children: "Optionally, set a workspace whose .kiro/ guardrails Warden should watch." }),
+      /* @__PURE__ */ t("li", { children: "Save, then press Run now or turn on the nightly check." })
     ] }),
-    /* @__PURE__ */ r("div", { style: { marginTop: 14 }, children: /* @__PURE__ */ r("button", { className: "hw-btn primary small", onClick: t, children: "Open settings" }) })
+    /* @__PURE__ */ t("div", { style: { marginTop: 14 }, children: /* @__PURE__ */ t("button", { className: "hw-btn primary small", onClick: r, children: "Open settings" }) })
   ] }) });
 }
-function Ye({ api: e, state: n, open: t, onToggle: l, onSaved: h }) {
-  var y, G;
-  const o = n.settings, [s, i] = g((o == null ? void 0 : o.hauntlet_checkout) ?? ""), [c, w] = g((o == null ? void 0 : o.watched_workspace) ?? ""), [d, b] = g((o == null ? void 0 : o.rooms) ?? n.known_rooms), [v, x] = g((o == null ? void 0 : o.repeat) ?? 3), [k, _] = g((o == null ? void 0 : o.hauntlet_source) ?? "checkout"), [D, E] = g([]), [H, C] = g(!1), [L, S] = g(!1), [F, O] = g(!1), [q, P] = g("");
-  oe(() => {
-    o && (i(o.hauntlet_checkout), w(o.watched_workspace), b(o.rooms), x(o.repeat), _(o.hauntlet_source));
+function qe({ api: e, state: n, open: r, onToggle: l, onSaved: p }) {
+  var v, T;
+  const o = n.settings, [s, i] = g((o == null ? void 0 : o.hauntlet_checkout) ?? ""), [c, w] = g((o == null ? void 0 : o.watched_workspace) ?? ""), [h, b] = g((o == null ? void 0 : o.rooms) ?? n.known_rooms), [y, x] = g((o == null ? void 0 : o.repeat) ?? 3), [k, $] = g((o == null ? void 0 : o.hauntlet_source) ?? "checkout"), [D, E] = g([]), [H, C] = g(!1), [A, _] = g(!1), [F, O] = g(!1), [U, I] = g("");
+  ne(() => {
+    o && (i(o.hauntlet_checkout), w(o.watched_workspace), b(o.rooms), x(o.repeat), $(o.hauntlet_source));
   }, [o == null ? void 0 : o.hauntlet_checkout, o == null ? void 0 : o.watched_workspace, o == null ? void 0 : o.repeat, o == null ? void 0 : o.hauntlet_source, ((o == null ? void 0 : o.rooms) ?? []).join(",")]);
-  const J = n.git_available_from, j = (/* @__PURE__ */ new Date()).toISOString().slice(0, 10) >= J, U = !!((y = o == null ? void 0 : o.git_install) != null && y.approved) && !!((G = o == null ? void 0 : o.git_install) != null && G.tool_path);
-  async function f(p) {
-    p.preventDefault(), S(!0), C(!1), E([]);
+  const P = !!((v = o == null ? void 0 : o.git_install) != null && v.approved) && !!((T = o == null ? void 0 : o.git_install) != null && T.tool_path);
+  async function V(d) {
+    d.preventDefault(), _(!0), C(!1), E([]);
     try {
-      await ye(e, {
+      await xe(e, {
         hauntlet_source: k,
         hauntlet_checkout: s.trim(),
         watched_workspace: c.trim(),
-        rooms: n.known_rooms.filter((T) => d.includes(T)),
-        repeat: Number(v),
+        rooms: n.known_rooms.filter((S) => h.includes(S)),
+        repeat: Number(y),
         uv_path: (o == null ? void 0 : o.uv_path) ?? "",
         command_timeout_secs: (o == null ? void 0 : o.command_timeout_secs) ?? 150
-      }), C(!0), h();
-    } catch (T) {
-      E(W(T).split("; "));
+      }), C(!0), p();
+    } catch (S) {
+      E(W(S).split("; "));
     } finally {
-      S(!1);
+      _(!1);
     }
   }
-  async function $() {
-    S(!0), P("");
+  async function q() {
+    _(!0), I("");
     try {
-      const p = await ve(e);
-      P(`Installed: ${p.tool_path}`), h();
-    } catch (p) {
-      P(W(p));
+      const d = await be(e);
+      I(`Installed: ${d.tool_path}`), p();
+    } catch (d) {
+      I(W(d));
     } finally {
-      S(!1);
+      _(!1);
     }
   }
-  const I = (p) => b((T) => T.includes(p) ? T.filter((ie) => ie !== p) : [...T, p]);
-  return /* @__PURE__ */ a("details", { className: "hw-card", open: t, onToggle: (p) => l(p.target.open), children: [
+  const f = (d) => b((S) => S.includes(d) ? S.filter((se) => se !== d) : [...S, d]);
+  return /* @__PURE__ */ a("details", { className: "hw-card", open: r, onToggle: (d) => l(d.target.open), children: [
     /* @__PURE__ */ a("summary", { className: "hw-card-head", style: { cursor: "pointer", listStyle: "none" }, children: [
       /* @__PURE__ */ a("div", { children: [
-        /* @__PURE__ */ r("h2", { children: "Settings" }),
-        /* @__PURE__ */ r("p", { children: o ? n.settings_errors.length ? n.settings_errors[0] : "Saved. Runs use these on the next start." : "Not configured yet." })
+        /* @__PURE__ */ t("h2", { children: "Settings" }),
+        /* @__PURE__ */ t("p", { children: o ? n.settings_errors.length ? n.settings_errors[0] : "Saved. Runs use these on the next start." : "Not configured yet." })
       ] }),
-      /* @__PURE__ */ r("span", { className: "hw-help", children: t ? "Hide" : "Show" })
+      /* @__PURE__ */ t("span", { className: "hw-help", children: r ? "Hide" : "Show" })
     ] }),
-    /* @__PURE__ */ a("form", { className: "hw-card-body hw-form", onSubmit: f, children: [
+    /* @__PURE__ */ a("form", { className: "hw-card-body hw-form", onSubmit: V, children: [
       /* @__PURE__ */ a("div", { className: "hw-field wide", children: [
-        /* @__PURE__ */ r("span", { className: "lab", children: "Hauntlet source" }),
+        /* @__PURE__ */ t("span", { className: "lab", children: "Hauntlet source" }),
         /* @__PURE__ */ a("div", { className: "hw-checks", role: "radiogroup", children: [
           /* @__PURE__ */ a("label", { className: `hw-check ${k === "checkout" ? "on" : ""}`, children: [
-            /* @__PURE__ */ r("input", { type: "radio", name: "src", checked: k === "checkout", onChange: () => _("checkout") }),
+            /* @__PURE__ */ t("input", { type: "radio", name: "src", checked: k === "checkout", onChange: () => $("checkout") }),
             "local checkout"
           ] }),
-          /* @__PURE__ */ a("label", { className: `hw-check ${k === "git" ? "on" : ""}`, title: U ? "" : "Install from GitHub first", children: [
-            /* @__PURE__ */ r("input", { type: "radio", name: "src", checked: k === "git", disabled: !U, onChange: () => _("git") }),
+          /* @__PURE__ */ a("label", { className: `hw-check ${k === "git" ? "on" : ""}`, title: P ? "" : "Install from GitHub first", children: [
+            /* @__PURE__ */ t("input", { type: "radio", name: "src", checked: k === "git", disabled: !P, onChange: () => $("git") }),
             "installed from GitHub"
           ] })
         ] })
       ] }),
       /* @__PURE__ */ a("div", { className: "hw-field", children: [
-        /* @__PURE__ */ r("label", { htmlFor: "hw-co", children: "Hauntlet checkout" }),
-        /* @__PURE__ */ r("input", { id: "hw-co", className: "hw-input", value: s, onChange: (p) => i(p.target.value), placeholder: "/Users/you/src/hauntlet", spellCheck: !1 }),
+        /* @__PURE__ */ t("label", { htmlFor: "hw-co", children: "Hauntlet checkout" }),
+        /* @__PURE__ */ t("input", { id: "hw-co", className: "hw-input", value: s, onChange: (d) => i(d.target.value), placeholder: "/Users/you/src/hauntlet", spellCheck: !1 }),
         /* @__PURE__ */ a("span", { className: "hw-help", children: [
           "Run as ",
-          /* @__PURE__ */ r("code", { children: "uv run --offline --project <path> hauntlet …" }),
+          /* @__PURE__ */ t("code", { children: "uv run --offline --project <path> hauntlet …" }),
           " from Warden’s own range directory. Run ",
-          /* @__PURE__ */ r("code", { children: "uv sync" }),
+          /* @__PURE__ */ t("code", { children: "uv sync" }),
           " in the checkout first."
         ] })
       ] }),
       /* @__PURE__ */ a("div", { className: "hw-field", children: [
-        /* @__PURE__ */ r("label", { htmlFor: "hw-ws", children: "Watched workspace (optional)" }),
-        /* @__PURE__ */ r("input", { id: "hw-ws", className: "hw-input", value: c, onChange: (p) => w(p.target.value), placeholder: "/Users/you/src/my-project", spellCheck: !1 }),
-        /* @__PURE__ */ r("span", { className: "hw-help", children: "Read-only. Warden reads its .kiro/ and never writes there." })
+        /* @__PURE__ */ t("label", { htmlFor: "hw-ws", children: "Watched workspace (optional)" }),
+        /* @__PURE__ */ t("input", { id: "hw-ws", className: "hw-input", value: c, onChange: (d) => w(d.target.value), placeholder: "/Users/you/src/my-project", spellCheck: !1 }),
+        /* @__PURE__ */ t("span", { className: "hw-help", children: "Read-only. Warden reads its .kiro/ and never writes there." })
       ] }),
       /* @__PURE__ */ a("div", { className: "hw-field wide", children: [
-        /* @__PURE__ */ r("span", { className: "lab", children: "Rooms" }),
-        /* @__PURE__ */ r("div", { className: "hw-checks", children: n.known_rooms.map((p) => /* @__PURE__ */ a("label", { className: `hw-check ${d.includes(p) ? "on" : ""}`, children: [
-          /* @__PURE__ */ r("input", { type: "checkbox", checked: d.includes(p), onChange: () => I(p) }),
-          p
-        ] }, p)) })
+        /* @__PURE__ */ t("span", { className: "lab", children: "Rooms" }),
+        /* @__PURE__ */ t("div", { className: "hw-checks", children: n.known_rooms.map((d) => /* @__PURE__ */ a("label", { className: `hw-check ${h.includes(d) ? "on" : ""}`, children: [
+          /* @__PURE__ */ t("input", { type: "checkbox", checked: h.includes(d), onChange: () => f(d) }),
+          d
+        ] }, d)) })
       ] }),
       /* @__PURE__ */ a("div", { className: "hw-field", children: [
-        /* @__PURE__ */ r("label", { htmlFor: "hw-k", children: "Repeats per agent (k)" }),
-        /* @__PURE__ */ r("input", { id: "hw-k", className: "hw-input num", type: "number", min: 1, max: 10, value: v, onChange: (p) => x(Number(p.target.value)) }),
-        /* @__PURE__ */ r("span", { className: "hw-help", children: "Hauntlet prints pass^k for k in 1, 2, 4, 8 up to this number. At 3 the headline is pass^2." })
+        /* @__PURE__ */ t("label", { htmlFor: "hw-k", children: "Repeats per agent (k)" }),
+        /* @__PURE__ */ t("input", { id: "hw-k", className: "hw-input num", type: "number", min: 1, max: 10, value: y, onChange: (d) => x(Number(d.target.value)) }),
+        /* @__PURE__ */ t("span", { className: "hw-help", children: "Hauntlet prints pass^k for k in 1, 2, 4, 8 up to this number. At 3 the headline is pass^2." })
       ] }),
       /* @__PURE__ */ a("div", { className: "hw-sub-card", children: [
-        /* @__PURE__ */ r("strong", { style: { fontSize: 13 }, children: "Install Hauntlet from GitHub" }),
+        /* @__PURE__ */ t("strong", { style: { fontSize: 13 }, children: "Install Hauntlet from GitHub" }),
         /* @__PURE__ */ a("span", { className: "hw-help", children: [
           "One-time, only when you approve it: ",
-          /* @__PURE__ */ r("code", { children: "uv tool install" }),
-          " into Warden’s data dir. After that every run is offline. ",
-          j ? "" : `Available from ${J}.`
+          /* @__PURE__ */ t("code", { children: "uv tool install" }),
+          " from github.com/kuberaplutus224/hauntlet into Warden’s data dir. After that every run is offline. The local checkout stays the default."
         ] }),
         /* @__PURE__ */ a("div", { className: "row", children: [
           /* @__PURE__ */ a("label", { className: "hw-check", children: [
-            /* @__PURE__ */ r("input", { type: "checkbox", checked: F, disabled: !j, onChange: (p) => O(p.target.checked) }),
+            /* @__PURE__ */ t("input", { type: "checkbox", checked: F, onChange: (d) => O(d.target.checked) }),
             "I approve this one-time download"
           ] }),
-          /* @__PURE__ */ r("button", { type: "button", className: "hw-btn small", disabled: !j || !F || L, onClick: $, children: U ? "Reinstall" : "Install" }),
-          q && /* @__PURE__ */ r("span", { children: q })
+          /* @__PURE__ */ t("button", { type: "button", className: "hw-btn small", disabled: !F || A, onClick: q, children: P ? "Reinstall" : "Install" }),
+          U && /* @__PURE__ */ t("span", { children: U })
         ] })
       ] }),
-      D.length > 0 && /* @__PURE__ */ r("ul", { className: "hw-errors", children: D.map((p) => /* @__PURE__ */ r("li", { children: p }, p)) }),
+      D.length > 0 && /* @__PURE__ */ t("ul", { className: "hw-errors", children: D.map((d) => /* @__PURE__ */ t("li", { children: d }, d)) }),
       /* @__PURE__ */ a("div", { className: "hw-formfoot", children: [
-        /* @__PURE__ */ r("button", { className: "hw-btn primary", type: "submit", disabled: L, children: "Save settings" }),
-        H && /* @__PURE__ */ r("span", { className: "hw-saved", children: "Saved" }),
-        /* @__PURE__ */ r("span", { className: "hw-help", children: "The schedule (03:00 local) is edited on the Schedule page. Disabling and re-enabling the app resets it to 03:00." })
+        /* @__PURE__ */ t("button", { className: "hw-btn primary", type: "submit", disabled: A, children: "Save settings" }),
+        H && /* @__PURE__ */ t("span", { className: "hw-saved", children: "Saved" }),
+        /* @__PURE__ */ t("span", { className: "hw-help", children: "The schedule (03:00 local) is edited on the Schedule page. Disabling and re-enabling the app resets it to 03:00." })
       ] })
     ] })
   ] });
 }
-const Ke = 5e3, Ze = 180 * 1e3;
-function rr() {
-  const e = de(), { openChat: n } = he(), [t, l] = g(null), [h, o] = g([]), [s, i] = g(null), [c, w] = g(void 0), [d, b] = g(""), [v, x] = g(null), [k, _] = g(!1), [D, E] = g(!1), [H, C] = g(!1), L = ce(null), S = ee(async () => {
+const Je = 5e3, Ye = 180 * 1e3;
+function Xe() {
+  const e = ie(), { openChat: n } = ce(), [r, l] = g(null), [p, o] = g([]), [s, i] = g(null), [c, w] = g(void 0), [h, b] = g(""), [y, x] = g(null), [k, $] = g(!1), [D, E] = g(!1), [H, C] = g(!1), A = le(null), _ = Q(async () => {
     var f;
     try {
-      const [$, I, y] = await Promise.all([we(e), ge(e), fe(e)]);
-      return l($), o(I.runs), i(y && y.status !== "none" ? y : ((f = $.latest) == null ? void 0 : f.drift) ?? null), b(""), (!$.settings || $.settings_errors.length) && C(!0), $;
-    } catch ($) {
-      return b(W($)), null;
+      const [v, T, d] = await Promise.all([ue(e), me(e), we(e)]);
+      return l(v), o(T.runs), i(d && d.status !== "none" ? d : ((f = v.latest) == null ? void 0 : f.drift) ?? null), b(""), (!v.settings || v.settings_errors.length) && C(!0), v;
+    } catch (v) {
+      return b(W(v)), null;
     }
-  }, [e]), F = ee(async () => {
+  }, [e]), F = Q(async () => {
     try {
-      w(await ke(e));
+      w(await ye(e));
     } catch {
       w(null);
     }
   }, [e]);
-  oe(() => {
-    S(), F();
+  ne(() => {
+    _(), F();
     const f = () => {
-      S(), F();
+      _(), F();
     };
     return window.addEventListener("focus", f), () => {
-      window.removeEventListener("focus", f), L.current && window.clearInterval(L.current);
+      window.removeEventListener("focus", f), A.current && window.clearInterval(A.current);
     };
-  }, [S, F]);
-  const O = !!(t != null && t.settings) && t.settings_errors.length === 0;
-  async function q() {
-    var I;
+  }, [_, F]);
+  const O = !!(r != null && r.settings) && r.settings_errors.length === 0;
+  async function U() {
+    var T;
     if (!c) return x({ kind: "bad", text: "The nightly-range-check job is not registered. Re-enable the app." });
-    _(!0), x({ kind: "info", text: "Running selftest, both reference agents in every room, and the Exorcist demos…" });
-    const f = (I = t == null ? void 0 : t.latest) == null ? void 0 : I.run_id;
+    $(!0), x({ kind: "info", text: "Running selftest, both reference agents in every room, and the Exorcist demos…" });
+    const f = (T = r == null ? void 0 : r.latest) == null ? void 0 : T.run_id;
     try {
-      await Ne(e, c);
-    } catch (y) {
-      return _(!1), x({ kind: "bad", text: `Could not start the run: ${W(y)}` });
+      await ke(e, c);
+    } catch (d) {
+      return $(!1), x({ kind: "bad", text: `Could not start the run: ${W(d)}` });
     }
-    const $ = Date.now();
-    L.current = window.setInterval(async () => {
-      const y = await S(), G = (y == null ? void 0 : y.latest) && y.latest.run_id !== f;
-      (G || Date.now() - $ > Ze) && (L.current && window.clearInterval(L.current), _(!1), x(G ? null : { kind: "bad", text: "No result after 3 minutes. Check the run on the Schedule page." }));
-    }, Ke);
+    const v = Date.now();
+    A.current = window.setInterval(async () => {
+      const d = await _(), S = (d == null ? void 0 : d.latest) && d.latest.run_id !== f;
+      (S || Date.now() - v > Ye) && (A.current && window.clearInterval(A.current), $(!1), x(S ? null : { kind: "bad", text: "No result after 3 minutes. Check the run on the Schedule page." }));
+    }, Je);
   }
-  async function P() {
+  async function I() {
     E(!0);
     try {
-      i(await xe(e));
+      i(await ge(e));
     } catch (f) {
       x({ kind: "bad", text: `Drift check failed: ${W(f)}` });
     }
     E(!1);
   }
-  async function J() {
+  async function P() {
     try {
-      const { text: f } = await be(e);
-      n({ agent: pe, message: _e(f), autoSend: !1 });
+      const { text: f } = await fe(e);
+      n({ agent: de, message: Ne(f), autoSend: !1 });
     } catch (f) {
       x({ kind: "bad", text: `Could not read the summary: ${W(f)}` });
     }
   }
-  async function j() {
+  async function V() {
     if (c)
       try {
-        await $e(e, c, !0), await F();
+        await ve(e, c, !0), await F();
       } catch (f) {
         x({ kind: "bad", text: W(f) });
       }
   }
-  const U = !!c && (c.user_paused || c.enabled === !1);
+  const q = !!c && (c.user_paused || c.enabled === !1);
   return /* @__PURE__ */ a("div", { className: "hw", children: [
-    /* @__PURE__ */ r("style", { children: De }),
+    /* @__PURE__ */ t("style", { children: Te }),
     /* @__PURE__ */ a("div", { className: "hw-wrap", children: [
       /* @__PURE__ */ a("header", { className: "hw-head", children: [
         /* @__PURE__ */ a("div", { children: [
-          /* @__PURE__ */ r("p", { className: "hw-kicker", children: "Hauntlet · Kiro Crew" }),
-          /* @__PURE__ */ r("h1", { className: "hw-title", children: "Hauntlet Warden" }),
-          /* @__PURE__ */ r("p", { className: "hw-sub", children: "Nightly range check and guardrail drift. No model, no credits, localhost only." })
+          /* @__PURE__ */ t("p", { className: "hw-kicker", children: "Hauntlet · Kiro Crew" }),
+          /* @__PURE__ */ t("h1", { className: "hw-title", children: "Hauntlet Warden" }),
+          /* @__PURE__ */ t("p", { className: "hw-sub", children: "Nightly range check and guardrail drift. No model, no credits, localhost only." })
         ] }),
         /* @__PURE__ */ a("div", { className: "hw-actions", children: [
-          O && U && /* @__PURE__ */ a("button", { className: "hw-btn", onClick: j, title: "Resume the app's own 03:00 job", children: [
-            /* @__PURE__ */ r(le, {}),
+          O && q && /* @__PURE__ */ a("button", { className: "hw-btn", onClick: V, title: "Resume the app's own 03:00 job", children: [
+            /* @__PURE__ */ t(oe, {}),
             "Turn on nightly check"
           ] }),
-          /* @__PURE__ */ a("button", { className: "hw-btn ghost", onClick: J, title: "Opens a chat with the Warden agent, seeded with the latest summary. One agent turn per question uses credits.", children: [
-            /* @__PURE__ */ r(Me, {}),
+          /* @__PURE__ */ a("button", { className: "hw-btn ghost", onClick: P, title: "Opens a chat with the Warden agent, seeded with the latest summary. One agent turn per question uses credits.", children: [
+            /* @__PURE__ */ t(Re, {}),
             "Ask Warden"
           ] }),
           /* @__PURE__ */ a(
             "button",
             {
               className: "hw-btn primary",
-              onClick: q,
+              onClick: U,
               disabled: !O || k || !c,
               title: O ? "Run the range now (no credits)" : "Save valid settings first",
               children: [
-                /* @__PURE__ */ r(Re, { className: k ? "hw-spin" : "" }),
+                /* @__PURE__ */ t(Se, { className: k ? "hw-spin" : "" }),
                 k ? "Running…" : "Run now"
               ]
             }
           )
         ] })
       ] }),
-      d && /* @__PURE__ */ a("div", { className: "hw-banner bad", role: "alert", children: [
+      h && /* @__PURE__ */ a("div", { className: "hw-banner bad", role: "alert", children: [
         "Could not reach Warden’s backend: ",
-        d
+        h
       ] }),
-      v && /* @__PURE__ */ r("div", { className: `hw-banner ${v.kind}`, role: "status", children: v.text }),
-      t ? /* @__PURE__ */ a(Q, { children: [
-        !O && /* @__PURE__ */ r(Je, { errors: t.settings_errors, settings: t.settings, onOpenSettings: () => C(!0) }),
-        /* @__PURE__ */ r(Be, { state: t, job: c }),
-        /* @__PURE__ */ r(Ge, { run: t.latest }),
-        /* @__PURE__ */ r(Ue, { state: t, history: h }),
-        /* @__PURE__ */ r(Ve, { drift: s, settings: t.settings, busy: D, onCheck: P }),
-        /* @__PURE__ */ r(Ye, { api: e, state: t, open: H, onToggle: C, onSaved: () => {
-          S(), F();
+      y && /* @__PURE__ */ t("div", { className: `hw-banner ${y.kind}`, role: "status", children: y.text }),
+      r ? /* @__PURE__ */ a(K, { children: [
+        !O && /* @__PURE__ */ t(Ve, { errors: r.settings_errors, settings: r.settings, onOpenSettings: () => C(!0) }),
+        /* @__PURE__ */ t(Oe, { state: r, job: c }),
+        /* @__PURE__ */ t(je, { run: r.latest }),
+        /* @__PURE__ */ t(Pe, { state: r, history: p }),
+        /* @__PURE__ */ t(Ue, { drift: s, settings: r.settings, busy: D, onCheck: I }),
+        /* @__PURE__ */ t(qe, { api: e, state: r, open: H, onToggle: C, onSaved: () => {
+          _(), F();
         } })
       ] }) : /* @__PURE__ */ a("div", { "aria-busy": "true", children: [
-        /* @__PURE__ */ r("div", { className: "hw-skel", style: { height: 92, marginBottom: 18 } }),
-        /* @__PURE__ */ r("div", { className: "hw-skel", style: { height: 320 } })
+        /* @__PURE__ */ t("div", { className: "hw-skel", style: { height: 92, marginBottom: 18 } }),
+        /* @__PURE__ */ t("div", { className: "hw-skel", style: { height: 320 } })
       ] }),
       /* @__PURE__ */ a("footer", { className: "hw-foot", children: [
-        /* @__PURE__ */ r("span", { children: "Only “Ask Warden” uses credits: one agent turn per question. Scheduled runs, Run now and drift checks call no model." }),
-        /* @__PURE__ */ r("span", { children: "Dummy secrets appear only as HAUNTLET-DUMMY-…" })
+        /* @__PURE__ */ t("span", { children: "Only “Ask Warden” uses credits: one agent turn per question. Scheduled runs, Run now and drift checks call no model." }),
+        /* @__PURE__ */ t("span", { children: "Dummy secrets appear only as HAUNTLET-DUMMY-…" })
       ] })
     ] })
   ] });
 }
 export {
-  rr as default
+  Xe as default
 };

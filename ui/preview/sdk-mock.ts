@@ -58,7 +58,7 @@ const state = {
   settings: scene === 'welcome' ? null : settings,
   settings_errors: scene === 'welcome' ? ['not configured'] : [],
   drift: scene === 'full' ? { status: 'missing', checked_at: day(0), workspace: settings.watched_workspace } : {},
-  reference: { rooms: {} }, known_rooms: ROOMS, demo_rooms: ROOMS.slice(0, 5), git_available_from: '2026-12-04',
+  reference: { rooms: {} }, known_rooms: ROOMS, demo_rooms: ROOMS.slice(0, 5),
 }
 const history = scene === 'full' ? Array.from({ length: 14 }, (_, j) => ({ run_id: `r${13 - j}`, status: 'ok', rooms: rooms(13 - j) })) : []
 

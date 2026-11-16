@@ -22,8 +22,6 @@ export function SettingsPanel({ api, state, open, onToggle, onSaved }: {
     setCheckout(s.hauntlet_checkout); setWs(s.watched_workspace); setRooms(s.rooms); setRepeat(s.repeat); setSource(s.hauntlet_source)
   }, [s?.hauntlet_checkout, s?.watched_workspace, s?.repeat, s?.hauntlet_source, (s?.rooms ?? []).join(',')])
 
-  const gitFrom = state.git_available_from
-  const gitOpen = new Date().toISOString().slice(0, 10) >= gitFrom
   const gitInstalled = !!s?.git_install?.approved && !!s?.git_install?.tool_path
 
   async function save(e: React.FormEvent) {
@@ -102,10 +100,10 @@ export function SettingsPanel({ api, state, open, onToggle, onSaved }: {
         </div>
         <div className="hw-sub-card">
           <strong style={{ fontSize: 13 }}>Install Hauntlet from GitHub</strong>
-          <span className="hw-help">One-time, only when you approve it: <code>uv tool install</code> into Warden’s data dir. After that every run is offline. {gitOpen ? '' : `Available from ${gitFrom}.`}</span>
+          <span className="hw-help">One-time, only when you approve it: <code>uv tool install</code> from github.com/kuberaplutus224/hauntlet into Warden’s data dir. After that every run is offline. The local checkout stays the default.</span>
           <div className="row">
-            <label className="hw-check"><input type="checkbox" checked={approve} disabled={!gitOpen} onChange={(e) => setApprove(e.target.checked)} />I approve this one-time download</label>
-            <button type="button" className="hw-btn small" disabled={!gitOpen || !approve || busy} onClick={install}>{gitInstalled ? 'Reinstall' : 'Install'}</button>
+            <label className="hw-check"><input type="checkbox" checked={approve} onChange={(e) => setApprove(e.target.checked)} />I approve this one-time download</label>
+            <button type="button" className="hw-btn small" disabled={!approve || busy} onClick={install}>{gitInstalled ? 'Reinstall' : 'Install'}</button>
             {installMsg && <span>{installMsg}</span>}
           </div>
         </div>

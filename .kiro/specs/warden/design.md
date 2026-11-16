@@ -298,7 +298,8 @@ Notes (updated after the spike):
   `PATH` and `which uv` succeeded (1.2). The fallbacks cover a gateway started
   by launchd with a short `PATH`.
 - `git_install` (Q1): the dashboard shows an "Install Hauntlet from GitHub"
-  action, which is refused before 2026-12-04. The user approves it explicitly.
+  action. The user approves it explicitly (no date gate since the repository
+  went public on 2026-11-16).
   The backend then runs `uv tool install --from
   git+https://github.com/kuberaplutus224/hauntlet hauntlet` once and records
   `tool_path`. This is the only Warden-initiated contact with a non-loopback
@@ -657,7 +658,7 @@ gateway health probe calls `/health` directly. The UI calls
 | `POST /api/drift/check` | runs `readonly.snapshot` + `drift.compare` with the stored reference, then saves and returns. Concurrency: one at a time |
 | `GET /api/summary` | `{"text": <summary.md, masked>}`, or `{"text": ""}` before the first run. Used by "Ask Warden" |
 | `POST /api/run-request` | writes `warden/run-request.json` (trigger hint, above). Nothing else |
-| `POST /api/git-install` | Q1: refused before 2026-12-04 and unless the body is `{"approve": true}`. Runs `git_install_cmd` once (timeout 300 s) and records `git_install` |
+| `POST /api/git-install` | Q1: refused (400) unless the body is exactly `{"approve": true}`. Runs `git_install_cmd` once (timeout 300 s) and records `git_install` |
 | `GET /api/reports/<file>` | name must fullmatch `autopsy-[a-z0-9-]+-(naive\|hardened)-[A-Za-z0-9_-]{8,64}\.html` or `exorcist-delta-[A-Za-z0-9_-]{8,64}\.html`. Looked up only in `<range>/reports/` and `<range>/exorcist-reports/` via `lstat` (regular file, no symlink). Served with the CSP of Requirement 7.5, `X-Content-Type-Options: nosniff` and `Referrer-Policy: no-referrer`. The body is refused (500) if it contains an unmasked `HAUNTLET-DUMMY-[A-Za-z0-9]` |
 | `GET /api/settings`, `PUT /api/settings` | `settings.validate` → `atomic_write_json`. The body is at most 16 KiB of JSON |
 
@@ -963,11 +964,13 @@ was decided as option A ("Agent: decision").
 ## Decisions (2026-11-12)
 
 - **Q1 — git source.** It is an opt-in, installed once with `uv tool install`
-  from the git URL after the user approves it on the Warden page (refused
-  before 2026-12-04). The tool goes into `<data dir>/tools/`, and runs are
-  offline after that. The localhost rule covers Warden's runtime traffic, and
-  the one-time install is the user's explicit choice. Until 2026-12-04 the
-  checkout is the default.
+  from the git URL after the user approves it on the Warden page. The tool
+  goes into `<data dir>/tools/`, and runs are offline after that. The
+  localhost rule covers Warden's runtime traffic, and the one-time install is
+  the user's explicit choice. The local checkout stays the default.
+  **Update 2026-11-16:** the repository went public earlier than planned, so
+  the 2026-12-04 date gate was removed (settings, backend `git_available_from`
+  and its 403, the page). The explicit approval is unchanged.
 - **Q2 — `--offline`.** Yes. An unsynced checkout gives "Hauntlet checkout is
   not synced: run `uv sync` in <checkout>".
 - **Q3 — Slack.** A Slack copy is acceptable when Slack is configured.
@@ -1016,3 +1019,17 @@ was decided as option A ("Agent: decision").
   tokens.
 - **Credits:** Crew's run history for the job has no `credits` or `model`
   field; a run took 6.5 s.
+
+## GitHub source tested on the installed app (2026-11-16)
+
+- `POST /api/git-install` refused `{}` and `{"approve": "yes"}` (400) and
+  installed nothing. `{"approve": true}` installed Hauntlet with
+  `uv tool install` into `<data dir>/tools/`; its `direct_url.json` names
+  `https://github.com/kuberaplutus224/hauntlet` at commit `689e799`.
+- With `hauntlet_source: "git"`, Run now gave `ok`: selftest passed, 12 room
+  runs and 5 demos parsed, drift computed. Every command ran the installed
+  tool's own Python directly (no `uv`, `UV_OFFLINE=1`).
+- No process started by the run held a network socket: `lsof -i` on every
+  such process, polled every 0.1 s for the whole run, found none. A poll can
+  miss a connection shorter than its interval; the Hauntlet commands Warden
+  runs make no network calls by design, and nothing in the run invokes uv.

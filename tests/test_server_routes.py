@@ -1,4 +1,3 @@
-import datetime as dt
 import http.client
 import json
 import threading
@@ -15,7 +14,7 @@ SECRET = "route-test-secret"
 
 @pytest.fixture
 def srv(paths):
-    app = server.App(paths, SECRET, today=dt.date(2026, 11, 13))
+    app = server.App(paths, SECRET)
     s = server.make_server(app, "127.0.0.1", 0)
     t = threading.Thread(target=s.serve_forever, daemon=True)
     t.start()
@@ -64,7 +63,7 @@ def test_unknown_route_is_404(srv):
 def test_state_before_configuration(srv):
     status, body = jcall(srv, "GET", "/api/state")
     assert status == 200 and body["latest"] is None and body["settings"] is None
-    assert body["known_rooms"] == list(S.KNOWN_ROOMS) and body["git_available_from"] == "2026-12-04"
+    assert body["known_rooms"] == list(S.KNOWN_ROOMS) and "git_available_from" not in body
 
 
 def test_settings_put_valid_and_invalid(srv, checkout, tmp_path):
@@ -95,12 +94,7 @@ def test_summary_and_run_request(srv, paths):
     assert store.consume_run_request(paths) == "manual"
 
 
-def test_git_install_refused_before_public_date(srv):
-    status, body = jcall(srv, "POST", "/api/git-install", {"approve": True})
-    assert status == 403 and "2026-12-04" in body["error"]
-
-
-def test_git_install_after_date_needs_approval_and_stays_in_data_dir(paths, monkeypatch):
+def test_git_install_needs_explicit_approval_and_stays_in_data_dir(paths, monkeypatch):
     from warden.execute import Outcome
 
     seen = []
@@ -112,11 +106,13 @@ def test_git_install_after_date_needs_approval_and_stays_in_data_dir(paths, monk
         return Outcome(0, "", "", False, 1.0)
 
     monkeypatch.setattr("warden.commands.resolve_uv", lambda s, **k: Path("/x/uv"))
-    app = server.App(paths, SECRET, today=dt.date(2026, 12, 5), execute=fake_exec, base_env={})
+    app = server.App(paths, SECRET, execute=fake_exec, base_env={})
     s = server.make_server(app)
     threading.Thread(target=s.serve_forever, daemon=True).start()
     try:
-        assert jcall(s, "POST", "/api/git-install", {})[0] == 400
+        for body in ({}, {"approve": "yes"}, {"approve": 1}, None):
+            assert jcall(s, "POST", "/api/git-install", body)[0] == 400
+        assert seen == []  # nothing ran without {"approve": true}
         status, body = jcall(s, "POST", "/api/git-install", {"approve": True})
         assert status == 200 and body["tool_path"] == str(paths.tools_bin / "hauntlet")
         assert seen[0].env["UV_TOOL_DIR"] == str(paths.tools)

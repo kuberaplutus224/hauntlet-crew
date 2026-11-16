@@ -1,4 +1,3 @@
-import datetime as dt
 import json
 import shutil
 
@@ -9,7 +8,6 @@ from warden.mask import has_unmasked
 
 from backend import nightly
 
-TODAY = dt.date(2026, 11, 13)
 
 
 def configure(paths, checkout, ws=""):
@@ -17,7 +15,7 @@ def configure(paths, checkout, ws=""):
 
 
 def run(paths, ctx, fake):
-    return nightly.run(ctx, paths=paths, execute=fake, base_env={}, which=lambda _: "/x/uv", today=TODAY)
+    return nightly.run(ctx, paths=paths, execute=fake, base_env={}, which=lambda _: "/x/uv")
 
 
 def test_not_configured_records_reason_and_does_not_notify(paths):

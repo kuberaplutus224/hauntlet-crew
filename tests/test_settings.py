@@ -1,12 +1,9 @@
-import datetime as dt
 
 import pytest
 
 from warden import settings as S
 from warden.settings import GitInstall, Settings, SettingsInvalid
 
-BEFORE = dt.date(2026, 11, 13)
-AFTER = dt.date(2026, 12, 5)
 
 
 def ok(checkout, ws="") -> Settings:
@@ -24,7 +21,7 @@ def test_defaults_are_the_decided_ones():
 def test_valid_settings_have_no_errors(paths, checkout, tmp_path):
     ws = tmp_path / "ws"
     ws.mkdir()
-    assert S.validate(ok(checkout, ws), paths, today=BEFORE) == []
+    assert S.validate(ok(checkout, ws), paths) == []
 
 
 @pytest.mark.parametrize(
@@ -47,7 +44,7 @@ def test_valid_settings_have_no_errors(paths, checkout, tmp_path):
 def test_invalid_settings_are_reported(paths, checkout, change, needle):
     from dataclasses import replace
 
-    errors = S.validate(replace(ok(checkout), **change), paths, today=BEFORE)
+    errors = S.validate(replace(ok(checkout), **change), paths)
     assert any(needle in e for e in errors), errors
 
 
@@ -55,22 +52,25 @@ def test_checkout_must_declare_hauntlet(paths, tmp_path):
     other = tmp_path / "other"
     other.mkdir()
     (other / "pyproject.toml").write_text('[project]\nname = "not-hauntlet"\n')
-    assert any("does not declare" in e for e in S.validate(ok(other), paths, today=BEFORE))
+    assert any("does not declare" in e for e in S.validate(ok(other), paths))
 
 
 def test_workspace_or_checkout_may_not_overlap_data_dir(paths, checkout):
-    assert any("overlap" in e for e in S.validate(ok(checkout, paths.data), paths, today=BEFORE))
-    assert any("overlap" in e for e in S.validate(ok(checkout, paths.data.parent), paths, today=BEFORE))
+    assert any("overlap" in e for e in S.validate(ok(checkout, paths.data), paths))
+    assert any("overlap" in e for e in S.validate(ok(checkout, paths.data.parent), paths))
 
 
-def test_git_source_refused_before_public_date_and_before_install(paths, tmp_path):
+def test_git_source_needs_the_approved_install_and_no_date(paths, tmp_path):
     s = Settings(hauntlet_source="git")
-    assert any("2026-12-04" in e for e in S.validate(s, paths, today=BEFORE))
-    assert any("Install Hauntlet from GitHub" in e for e in S.validate(s, paths, today=AFTER))
+    errors = S.validate(s, paths)
+    assert any("Install Hauntlet from GitHub" in e for e in errors)
+    assert not any("2026" in e for e in errors)  # no date gate
+    unapproved = Settings(hauntlet_source="git", git_install=GitInstall(False, None, str(tmp_path / "x")))
+    assert any("Install Hauntlet from GitHub" in e for e in S.validate(unapproved, paths))
     tool = tmp_path / "hauntlet-tool"
     tool.write_text("#!/bin/sh\n")
     s2 = Settings(hauntlet_source="git", git_install=GitInstall(True, "2026-12-05T00:00:00Z", str(tool)))
-    assert S.validate(s2, paths, today=AFTER) == []
+    assert S.validate(s2, paths) == []
 
 
 def test_from_dict_is_strict():

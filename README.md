@@ -60,7 +60,7 @@ configured.
 | Watched workspace | Optional. The workspace whose `.kiro/` Warden compares, read-only |
 | Rooms | Which of the six rooms to run. All six by default. Drift uses the five that have an Exorcist demo (not `parlor`) |
 | Repeats per agent (k) | 1–10, default 3. Hauntlet prints pass^k for k = 1, 2, 4, 8 up to this number, so at 3 the headline is **pass^2**. The page labels the k |
-| Hauntlet source | `local checkout` now. `installed from GitHub` becomes available from 2026-12-04 (see below) |
+| Hauntlet source | `local checkout` (the default) or `installed from GitHub`, after the one-time install below |
 
 The nightly job ships **paused**. Once the settings are valid, press **Turn on
 nightly check**, or press **Run now** to run once immediately.
@@ -116,14 +116,19 @@ rm -rf ~/Library/Application\ Support/hauntlet-warden          # macOS
 rm -rf "${XDG_DATA_HOME:-$HOME/.local/share}/hauntlet-warden"  # Linux
 ```
 
-### Installing from GitHub (from 2026-12-04)
+### Installing from GitHub
 
-Once the Hauntlet repository is public, the settings panel offers **Install
-Hauntlet from GitHub**. Tick **I approve this one-time download** and press
-**Install**. Warden runs `uv tool install` from
+The Hauntlet repository is public, so you can skip the local checkout. In the
+settings panel, under **Install Hauntlet from GitHub**, tick **I approve this
+one-time download** and press **Install**. Warden runs `uv tool install` from
 `git+https://github.com/kuberaplutus224/hauntlet` once, into its own data
 directory. After that, runs use the installed tool offline. This click is the
-only time Warden contacts a host other than localhost.
+only time Warden contacts a host other than localhost. Nothing installs without
+it: the backend refuses any request that is not exactly `{"approve": true}`.
+
+Then switch **Hauntlet source** to **installed from GitHub** and save. The
+local checkout stays the default. **Reinstall** repeats the one download to
+pick up a newer Hauntlet; runs never update it on their own.
 
 ## Notifications
 
@@ -172,7 +177,7 @@ These are in `.kiro/steering/safety-rules.md` and enforced by tests:
 
 | | Decision |
 |---|---|
-| Q1 | The GitHub source is an opt-in: installed once after your approval, then offline. The localhost rule covers Warden's runtime traffic. The checkout is the default until 2026-12-04 |
+| Q1 | The GitHub source is an opt-in: installed once after your approval, then offline. The localhost rule covers Warden's runtime traffic. The local checkout stays the default. The date gate (2026-12-04) was removed when the repository went public on 2026-11-16 |
 | Q2 | `--offline`, with a clear "run `uv sync`" message when the checkout is not synced. Keep `--offline --project`, not `--no-sync` (see above) |
 | Q3 | A Slack copy of a notification is acceptable when Slack is configured |
 | Q4 | A run error and a selftest recovery both count as changes and notify |

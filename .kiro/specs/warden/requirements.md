@@ -240,10 +240,11 @@ without touching my workspaces.
 4. THE settings SHALL include `hauntlet_source`, with the default
    `checkout`. THE value `git` SHALL be usable only after the user approves a
    one-time install on the Warden page (`uv tool install --from
-   git+https://github.com/kuberaplutus224/hauntlet hauntlet`). That install
-   SHALL be refused before 2026-12-04. After it, runs SHALL be offline. That
-   install is the only Warden-initiated contact with a non-loopback host
-   (decision Q1).
+   git+https://github.com/kuberaplutus224/hauntlet hauntlet`). The backend
+   SHALL run that install only for a request body of exactly
+   `{"approve": true}`. After it, runs SHALL be offline. That install is the
+   only Warden-initiated contact with a non-loopback host (decision Q1). There
+   is no date gate: the repository went public on 2026-11-16.
 5. THE checkout setting SHALL be an absolute path to a directory whose
    `pyproject.toml` declares the project name `hauntlet`. Otherwise the run is
    recorded as `not_configured`.

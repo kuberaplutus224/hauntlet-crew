@@ -42,3 +42,9 @@ def test_ask_warden_is_not_auto_sent_and_targets_the_agent():
 def test_approved_sentence_and_no_absolute_urls():
     assert CLIENT_NOTE in DIST
     assert not re.search(r"https?://", DIST)
+
+
+def test_github_install_has_no_date_gate_but_needs_approval():
+    assert "git_available_from" not in DIST and "2026-12-04" not in DIST
+    assert "I approve this one-time download" in DIST
+    assert re.search(r"approve\s*:\s*(!0|true)", DIST)  # the page sends {"approve": true}

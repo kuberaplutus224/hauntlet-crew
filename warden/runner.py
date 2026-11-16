@@ -103,12 +103,11 @@ def run_all(
     which: Callable[[str], str | None] = shutil.which,
     now: Callable[[], _dt.datetime] = utc_now,
     monotonic: Callable[[], float] = time.monotonic,
-    today: _dt.date | None = None,
     budget: float = RUN_BUDGET_SECS,
 ) -> dict[str, Any]:
     """Run the whole sequence and return the run record (with its drift report)."""
     started = now()
-    errors = validate(s, paths, today=today)
+    errors = validate(s, paths)
     if errors:
         return not_configured("; ".join(errors), trigger=trigger, now=started, s=s)
     uv = commands.resolve_uv(s, which=which)

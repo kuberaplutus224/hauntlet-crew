@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import datetime as _dt
 import json
 import os
 import tomllib
@@ -22,8 +21,6 @@ KNOWN_ROOMS: tuple[str, ...] = (
 )
 #: ``hauntlet exorcist demo`` supports every room except parlor (decision Q6).
 DEMO_ROOMS: tuple[str, ...] = tuple(r for r in KNOWN_ROOMS if r != "parlor")
-#: The Hauntlet repository becomes public on this date (decision Q1).
-GIT_PUBLIC_DATE = _dt.date(2026, 12, 4)
 
 SOURCES = ("checkout", "git")
 REPEAT_RANGE = (1, 10)
@@ -134,9 +131,8 @@ def _is_hauntlet_checkout(path: Path) -> bool:
     return data.get("project", {}).get("name") == "hauntlet"
 
 
-def validate(s: Settings, paths: Paths, *, today: _dt.date | None = None) -> list[str]:
+def validate(s: Settings, paths: Paths) -> list[str]:
     """Return every reason these settings cannot run a nightly check (empty = runnable)."""
-    today = today or _dt.date.today()
     errors: list[str] = []
     if s.schema != 1:
         errors.append("unsupported settings schema")
@@ -155,9 +151,7 @@ def validate(s: Settings, paths: Paths, *, today: _dt.date | None = None) -> lis
         elif overlaps(c, paths.data) or overlaps(c, paths.range):
             errors.append("the Hauntlet checkout must not overlap Warden's data or range directory")
     else:  # git
-        if today < GIT_PUBLIC_DATE:
-            errors.append(f"the git source is available from {GIT_PUBLIC_DATE.isoformat()}")
-        elif not s.git_install.approved or not s.git_install.tool_path:
+        if not s.git_install.approved or not s.git_install.tool_path:
             errors.append("Install Hauntlet from GitHub on the Warden page first")
         elif not Path(s.git_install.tool_path).is_file():
             errors.append("the installed Hauntlet tool is missing; install it again")

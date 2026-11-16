@@ -74,7 +74,6 @@ export interface State {
   reference: { rooms: Record<string, string> }
   known_rooms: string[]
   demo_rooms: string[]
-  git_available_from: string
 }
 
 export interface HistoryRun {
